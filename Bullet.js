@@ -31,7 +31,7 @@ Bullet.prototype.velX = 1;
 Bullet.prototype.velY = 1;
 
 // Convert times from seconds to "nominal" time units.
-Bullet.prototype.lifeSpan = 3 * SECS_TO_NOMINALS;
+Bullet.prototype.lifeSpan = 1 * SECS_TO_NOMINALS;
 
 Bullet.prototype.update = function (du) {
 
@@ -57,8 +57,8 @@ Bullet.prototype.getPos = function () {
 }
 
 Bullet.prototype.wrapPosition = function () {
-    this.cx = util.wrapRange(this.cx, 0, g_canvas.width);
-    this.cy = util.wrapRange(this.cy, 0, g_canvas.height);
+    this.cx = util.wrapRange(this.cx, 0, mapSize);
+    //this.cy = util.wrapRange(this.cy, 0, g_canvas.height);
 };
 
 Bullet.prototype.render = function (ctx) {

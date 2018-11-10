@@ -51,6 +51,12 @@ entityManager.generateShip({
     cy : 200
 });
 
+var Background1 = new Background({
+    cx : 0,
+    cy : 0,
+    velX : 0
+});
+
 
 
 // =============
@@ -145,7 +151,7 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 
 function renderSimulation(ctx) {
-
+    Background1.render(ctx);
     entityManager.render(ctx);
 
 }
@@ -161,7 +167,8 @@ function requestPreloads() {
 
     var requiredImages = {
 	ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
-	rock   : "https://notendur.hi.is/~pk/308G/images/rock.png"
+	rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
+  background : "Spacepic.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -172,6 +179,7 @@ var g_sprites = {};
 function preloadDone() {
 
     g_sprites.ship = new Sprite(g_images.ship);
+    g_sprites.background = new Sprite(g_images.background);
 
     g_sprites.bullet = new Sprite(g_images.ship);
     g_sprites.bullet.scale = 0.25;

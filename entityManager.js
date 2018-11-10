@@ -95,14 +95,15 @@ deferredSetup : function () {
     this._categories = [this._rocks, this._bullets, this._ships];
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation) {
-
-    // TODO: Implement this
+fireBullet: function(cx, cy, velX, velY, rotation, translate) {
+	
     this._bullets.push(new Bullet( {cx: cx,
                                     cy: cy,
                                     velX: velX,
                                     velY: velY,
-                                    rotation: rotation}));
+                                    rotation: rotation,
+									translate: translate
+									}));
 },
 
 generateShip : function(descr) {

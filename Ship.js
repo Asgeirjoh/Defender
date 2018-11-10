@@ -11,7 +11,6 @@
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-
 // A generic contructor which accepts an arbitrary descriptor object
 function Ship(descr) {
     for (var property in descr) {
@@ -32,45 +31,44 @@ Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
-Ship.prototype.rotation = (90*(Math.PI/180));
+Ship.prototype.rotation = Math.PI/180;
 Ship.prototype.cx = 200;
 Ship.prototype.cy = 200;
 Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.numSubSteps = 1;
+Ship.prototype.frame = 1;
 
 Ship.prototype.update = function(du) {
     var steps = this.numSubSteps;
     var dStep = du / steps;
+	
     for (var i = 0; i < steps; ++i) {
-	     this.computeThrustMag(dStep);
+	   this.computeThrustMag(dStep);
        this.computeUpandDown();
     }
-
-    if (keys[this.KEY_FIRE]) {
-    	var relVel = 2;
-    	var relVelX = +Math.sin(this.rotation) * relVel;
-    	var relVelY = -Math.cos(this.rotation) * relVel;
-
+	
+    if (keys[this.KEY_FIRE]) {    	
+      	var vel = 10 * this.frame; 
+		
     	entityManager.fireBullet(
     	   this.cx + offset, this.cy,
-    	   this.velX + relVelX, this.velY + relVelY,
-    	   this.rotation);
+    	   vel, 0, this.rotation, this.frame);
     }
 }
 
 var NOMINAL_THRUST = +0.2;
-var NOMINAL_DETHRUST  = 0.15;
+var NOMINAL_DETHRUST  = +0.2;
 
 Ship.prototype.computeThrustMag = function (du) {
     var maxspeed = 12;
     var thrust = 0;
     if ((keys[this.KEY_RIGHT]) && (this.velX < maxspeed)) {
-        thrust += NOMINAL_THRUST;
+        thrust += NOMINAL_THRUST;		
         this.applyAccel(NOMINAL_THRUST, du);
     }
     else if ((keys[this.KEY_LEFT]) && (this.velX > -maxspeed)) {
-        thrust -= NOMINAL_THRUST;
+        thrust -= NOMINAL_THRUST;		
         this.applyAccel(-NOMINAL_THRUST, du);
     }
 
@@ -86,9 +84,10 @@ Ship.prototype.computeThrustMag = function (du) {
         this.halt();
       }
     }
-    Background.prototype.wrapPosition();
+    Background.prototype.wrapPosition(); // LAGA ÞETTA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     this.wrapPosition();
     this.updateRotation(du);
+	this.updateFrame();
 };
 
 Ship.prototype.computeUpandDown = function () {
@@ -155,7 +154,7 @@ Ship.prototype.getPos = function () {
 Ship.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.rotation = this.reset_rotation;
-
+	this.frame = 1;
     this.halt();
 };
 
@@ -166,20 +165,31 @@ Ship.prototype.halt = function () {
 
 Ship.prototype.updateRotation = function (du) {
     if (keys[this.KEY_LEFT]) {
-        this.rotation = (-90*(Math.PI/180));
+        this.rotation = Math.PI/180;			
     }
     if (keys[this.KEY_RIGHT]) {
-        this.rotation = (90*(Math.PI/180));
+        this.rotation = Math.PI/180;
     }
 };
 
+Ship.prototype.updateFrame = function(){
+	if (keys[this.KEY_LEFT]) {
+        this.frame = -1;		
+    }
+	
+    if (keys[this.KEY_RIGHT]) {
+        this.frame = 1;
+    }
+}
+
 Ship.prototype.wrapPosition = function () {
-    this.cx = util.wrapRange(this.cx, 0, mapSize);
-    //this.cy = util.wrapRange(this.cy, 0, g_canvas.height);
+    this.cx = util.wrapRange(this.cx, 0, mapSize);   
 };
 
 Ship.prototype.render = function (ctx) {
+	
     g_sprites.ship.drawWrappedCentredAt(
-	ctx, this.cx + offset, this.cy, this.rotation
+	ctx, this.cx + offset, this.cy,
+		this.rotation, this.frame
     );
 };

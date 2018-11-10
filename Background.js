@@ -3,6 +3,7 @@
 // ==========
 
 "use strict";
+/*jslint nomen: true, white: true, plusplus: true*/
 
 function Background(descr) {
   for (var property in descr) {

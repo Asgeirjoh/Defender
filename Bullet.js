@@ -18,7 +18,6 @@ function Bullet(descr) {
     }
 }
 
-Bullet.prototype.rotation = 0;
 Bullet.prototype.cx = 200;
 Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 1;
@@ -55,11 +54,12 @@ Bullet.prototype.wrapPosition = function () {
 Bullet.prototype.render = function (ctx) {
 
     var fadeThresh = Bullet.prototype.lifeSpan / 3;
-
+	let scale = 0.1;
+	
     ctx.globalAlpha = this.lifeSpan/fadeThresh;
 
-    g_sprites.bullet.drawWrappedCentredAt(	
-		ctx, this.cx, this.cy, this.rotation, 1);
+    g_sprites.bullet.drawCentredAt(	
+		ctx, this.cx, this.cy, 1, scale);
    
     ctx.globalAlpha = 1;
 };

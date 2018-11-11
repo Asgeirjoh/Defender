@@ -19,9 +19,10 @@ var g_ctx = g_canvas.getContext("2d");
 // ====================
 
 entityManager.generateShip({
-    cx : 400,
-    cy : 200
+    cx : g_canvas.width / 2,
+    cy : g_canvas.height / 2
 });
+
 
 var Background1 = new Background({
     cx : 0,
@@ -114,9 +115,10 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-	ship  	   : "Pictures/playerSheet.png",
-	bullet     : "Pictures/shot.png",
-	background : "Spacepic.png"
+		ship  	   : "Pictures/playerSheet.png",
+		bullet     : "Pictures/shot.png",
+		background : "Spacepic.png",
+		enemy	   : "Pictures/enemySpriteSheet.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -129,6 +131,7 @@ function preloadDone() {
     g_sprites.ship = new Sprite(g_images.ship);
     g_sprites.background = new Sprite(g_images.background);
     g_sprites.bullet = new Sprite(g_images.bullet);
+	g_sprites.enemy = new Sprite(g_images.enemy);
     main.init();
 }
 

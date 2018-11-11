@@ -19,8 +19,7 @@ function Ship(descr) {
 
     // Remember my reset positions
     this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    this.reset_rotation = this.rotation;
+    this.reset_cy = this.cy;   
 }
 
 Ship.prototype.KEY_UP = 'W'.charCodeAt(0);
@@ -31,7 +30,6 @@ Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
-Ship.prototype.rotation = Math.PI/180;
 Ship.prototype.cx = 200;
 Ship.prototype.cy = 200;
 Ship.prototype.velX = 0;
@@ -42,18 +40,18 @@ Ship.prototype.frame = 1;
 Ship.prototype.update = function(du) {
     var steps = this.numSubSteps;
     var dStep = du / steps;
+	let vel = 10 * this.frame; 
+	let offsetBulletY = this.cy + 10;
 	
     for (var i = 0; i < steps; ++i) {
 	   this.computeThrustMag(dStep);
        this.computeUpandDown();
     }
 	
-    if (keys[this.KEY_FIRE]) {    	
-      	var vel = 10 * this.frame; 
-		
+    if (keys[this.KEY_FIRE]) {  
     	entityManager.fireBullet(
-    	   this.cx + offset, this.cy,
-    	   vel, 0, this.rotation, this.frame);
+    	   this.cx + offset, offsetBulletY,
+    	   vel, 0, this.frame);
     }
 }
 
@@ -85,8 +83,7 @@ Ship.prototype.computeThrustMag = function (du) {
       }
     }
     Background.prototype.wrapPosition(); // LAGA ÞETTA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-    this.wrapPosition();
-    this.updateRotation(du);
+    this.wrapPosition();  
 	this.updateFrame();
 };
 
@@ -153,7 +150,6 @@ Ship.prototype.getPos = function () {
 
 Ship.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
-    this.rotation = this.reset_rotation;
 	this.frame = 1;
     this.halt();
 };
@@ -161,15 +157,6 @@ Ship.prototype.reset = function () {
 Ship.prototype.halt = function () {
     this.velX = 0;
     this.velY = 0;
-};
-
-Ship.prototype.updateRotation = function (du) {
-    if (keys[this.KEY_LEFT]) {
-        this.rotation = Math.PI/180;			
-    }
-    if (keys[this.KEY_RIGHT]) {
-        this.rotation = Math.PI/180;
-    }
 };
 
 Ship.prototype.updateFrame = function(){
@@ -187,9 +174,12 @@ Ship.prototype.wrapPosition = function () {
 };
 
 Ship.prototype.render = function (ctx) {
+	let scale = 32 / g_sprites.ship.width;	
 	
-    g_sprites.ship.drawWrappedCentredAt(
-	ctx, this.cx + offset, this.cy,
-		this.rotation, this.frame
+	let frame = this.frame < 0 ? 0 : 1;
+	
+    g_sprites.ship.drawCentredAt(
+		ctx, this.cx + offset, this.cy,
+		frame, scale
     );
 };

@@ -30,15 +30,6 @@ _bShowRocks : false,
 
 // "PRIVATE" METHODS
 
-_generateRocks : function() {
-    var i,
-	NUM_ROCKS = 4;
- 
-  for (i = 0; i < NUM_ROCKS; i++) {
-    this._rocks[i] = new Rock();
-  } 
-},
-
 _findNearestShip : function(posX, posY) {
    
     var minLength = util.square(g_canvas.width) + util.square(g_canvas.height),
@@ -86,27 +77,25 @@ deferredSetup : function () {
     this._categories = [this._rocks, this._bullets, this._ships, this._enemies];
 },
 
-fireBullet: function(cx, cy, velX, velY, translate) {
-	
+fireBullet: function(cx, cy, velX, velY) {	
     this._bullets.push(new Bullet( {cx: cx,
                                     cy: cy,
                                     velX: velX,
-                                    velY: velY,                                  
-									translate: translate
+                                    velY: velY 
 									}));
 },
 
-generateEnemy : function(){
-	this._enemies.push(new Enemy({cx: 100, cy: 100}));
+generateEnemy : function(cx, cy, velX, velY, frame){	
+	this._enemies.push(new Enemy({cx: cx, cy: cy,
+								  velX: velX, velY: velY,
+								  frame: frame}));
 },
 
-generateShip : function(descr) {
-   
+generateShip : function(descr) {   
     this._ships.push(new Ship({cx: descr.cx, cy: descr.cy}));
 },
 
 killNearestShip : function(xPos, yPos) {
-
     var nearestShip = this._findNearestShip(xPos, yPos);
     this._ships.splice(nearestShip.theIndex, 1); 
 },
@@ -120,7 +109,7 @@ haltShips: function() {
 },
 
 update: function(du) {
-	this.generateEnemy();
+	
     for (var c = 0; c < this._categories.length; ++c) {
       var aCategories = this._categories[c];
       for (var i = 0; i < aCategories.length; ++i) {
@@ -133,6 +122,12 @@ update: function(du) {
 },
 
 render: function(ctx) {
+	if(this._enemies.length < 3){
+		for(let g = 0; g < 3; g++){
+			this.generateEnemy(100 * i, 10, 0,  0, g);
+			
+		}
+	}
 
     for (var c = 0; c < this._categories.length; ++c) {
      var aCategory = this._categories[c];

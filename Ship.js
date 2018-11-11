@@ -30,28 +30,32 @@ Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
-Ship.prototype.cx = 200;
-Ship.prototype.cy = 200;
+Ship.prototype.cx = 0;
+Ship.prototype.cy = 0;
 Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.numSubSteps = 1;
-Ship.prototype.frame = 1;
+Ship.prototype.frame = 0;
+Ship.prototype.scale = 1;
 
 Ship.prototype.update = function(du) {
+	
     var steps = this.numSubSteps;
     var dStep = du / steps;
 	let vel = 10 * this.frame; 
-	let offsetBulletY = this.cy + 10;
+	let offsetBulletY = this.cy;
+	let offsetBulletX = this.cx + offset;
 	
     for (var i = 0; i < steps; ++i) {
 	   this.computeThrustMag(dStep);
-       this.computeUpandDown();
+       this.computeUpandDown();	 
     }
 	
+	// Firing a bullet
     if (keys[this.KEY_FIRE]) {  
     	entityManager.fireBullet(
-    	   this.cx + offset, offsetBulletY,
-    	   vel, 0, this.frame);
+    	   offsetBulletX, offsetBulletY,
+    	   vel, 0);
     }
 }
 
@@ -88,13 +92,14 @@ Ship.prototype.computeThrustMag = function (du) {
 };
 
 Ship.prototype.computeUpandDown = function () {
+	
     if (keys[this.KEY_UP]) {
-        if (this.cy > g_sprites.ship.height/2) {
-          this.cy += -5;
-      }
+        if (this.cy > 0) {
+          this.cy -= 5;
+      }	  
     }
     if (keys[this.KEY_DOWN]) {
-      if (this.cy < g_canvas.height - g_sprites.ship.height/2) {
+      if (this.cy < g_canvas.height - g_sprites.ship.getSpriteHeight()) {
         this.cy += 5;
       }
     }
@@ -120,7 +125,7 @@ Ship.prototype.applyAccel = function (accelX, du) {
     // bounce
     if (g_useGravity) {
 
-	var minY = g_sprites.ship.height / 2;
+	var minY = g_sprites.ship.getSpriteHeight();
 	var maxY = g_canvas.height - minY;
 
 	// Ignore the bounce if the ship is already in
@@ -128,7 +133,7 @@ Ship.prototype.applyAccel = function (accelX, du) {
 	if (this.cy > maxY || this.cy < minY) {
 	    // do nothing
 	} else if (nextY > maxY || nextY < minY) {
-            this.velY = oldVelY * -0.9;
+            this.velY = oldVelY * (-0.9);
             intervalVelY = this.velY;
         }
     }
@@ -160,12 +165,13 @@ Ship.prototype.halt = function () {
 };
 
 Ship.prototype.updateFrame = function(){
+	
 	if (keys[this.KEY_LEFT]) {
-        this.frame = -1;		
+		this.frame = 0;		       	
     }
 	
-    if (keys[this.KEY_RIGHT]) {
-        this.frame = 1;
+    if (keys[this.KEY_RIGHT]) {    
+		this.frame = 1;			
     }
 }
 
@@ -174,12 +180,9 @@ Ship.prototype.wrapPosition = function () {
 };
 
 Ship.prototype.render = function (ctx) {
-	let scale = 32 / g_sprites.ship.width;	
-	
-	let frame = this.frame < 0 ? 0 : 1;
 	
     g_sprites.ship.drawCentredAt(
 		ctx, this.cx + offset, this.cy,
-		frame, scale
+		this.frame, this.scale
     );
 };

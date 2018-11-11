@@ -15,30 +15,30 @@
 function Enemy(descr) {
     for (var property in descr) {
         this[property] = descr[property];
-    }
-
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;   
+    } 	
+	
+	this.cx = 200;
+	this.cy;
+	this.velX;
+	this.velY;
+	this.frame;
 }
 
-// Initial, inheritable, default values
-Enemy.prototype.cx = 100;
-Enemy.prototype.cy = 100;
-Enemy.prototype.velX = 0;
-Enemy.prototype.velY = 0;
-Enemy.prototype.frame = 0;
 
 Enemy.prototype.update = function(du){
-	
+	this.cx = 200;
+	this.cy = 0;
+	this.velX = 1;
+	this.velY = 1;
+	this.frame = 1;
 }
 
 Enemy.prototype.render = function(ctx){
 	let scale = 1;
-	let frame = 0;
+
 	
-	g_sprites.ship.drawCentredAt(
+	g_sprites.enemy.drawCentredAt(
 		ctx, this.cx, this.cy,
-		frame, scale
+		this.frame, scale
     );
 }

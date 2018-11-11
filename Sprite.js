@@ -14,11 +14,21 @@
 // Construct a "sprite" from the given `image`,
 //
 function Sprite(image) {
+	this._SPRITE_HEIGHT = 32;
     this.image = image;
 
     this.width = image.width;
-    this.height = image.height; 	
+    this.height = image.height;
+	this._imageFrames = this.height / this._SPRITE_HEIGHT ;		
 }
+
+Sprite.prototype.getImageFrames = function(){
+	return this._imageFrames;
+};
+
+Sprite.prototype.getSpriteHeight = function(){
+	return this._SPRITE_HEIGHT;
+};
 
 Sprite.prototype.drawAt = function (ctx, x, y) {
     ctx.drawImage(this.image, x, y);
@@ -26,13 +36,10 @@ Sprite.prototype.drawAt = function (ctx, x, y) {
 
 Sprite.prototype.drawCentredAt = function (ctx, cx, cy, frame, scale) {   
 	
-    var w = this.width, h = this.height;
-	
-    ctx.save();
-    ctx.translate(cx, cy);    
-	ctx.scale(scale, scale);
-	
-    ctx.drawImage(this.image, 0, (h / 2) * frame, w, (h / 2), -cx + (g_canvas.width / 2) - (w / 2), -cy + (g_canvas.height / 2), w * 2, h);
+    var w = this.width, h = this.height / this._imageFrames;	
+    ctx.save();   
+	ctx.scale(scale, scale);	
+    ctx.drawImage(this.image, 0, h * frame, w, h, cx, cy, w, h);
     ctx.restore();
 };
 

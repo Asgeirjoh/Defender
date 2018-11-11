@@ -18,11 +18,6 @@ function Bullet(descr) {
     }
 }
 
-Bullet.prototype.cx = 200;
-Bullet.prototype.cy = 200;
-Bullet.prototype.velX = 1;
-Bullet.prototype.velY = 0;
-
 // Convert times from seconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 1 * SECS_TO_NOMINALS;
 
@@ -54,12 +49,11 @@ Bullet.prototype.wrapPosition = function () {
 Bullet.prototype.render = function (ctx) {
 
     var fadeThresh = Bullet.prototype.lifeSpan / 3;
-	let scale = 0.1;
+	let scale = 1;	
 	
-    ctx.globalAlpha = this.lifeSpan/fadeThresh;
-
-    g_sprites.bullet.drawCentredAt(	
-		ctx, this.cx, this.cy, 1, scale);
-   
+	ctx.globalAlpha = this.lifeSpan/fadeThresh;
+	g_sprites.bullet.drawCentredAt(	
+		ctx, this.cx, this.cy, 0, scale);
+	
     ctx.globalAlpha = 1;
 };

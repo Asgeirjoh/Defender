@@ -35,7 +35,8 @@ function update(dt) {
     //
     var du = (dt / NOMINAL_UPDATE_INTERVAL);
     
-    updateSimulation(du);
+    gameManager.updateScreen(du);
+    
     
     g_prevUpdateDt = original_dt;
     g_prevUpdateDu = du;

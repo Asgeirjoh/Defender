@@ -38,15 +38,6 @@ function gatherInputs() {
 // =================
 
 // GAME-SPECIFIC UPDATE LOGIC
-function updateSimulation(du) {
-
-    processDiagnostics();
-
-    entityManager.update(du);
-
-    // Prevent perpetual firing!
-    eatKey(Ship.prototype.KEY_FIRE);
-}
 
 // GAME-SPECIFIC DIAGNOSTICS
 var g_allowMixedActions = true;
@@ -111,7 +102,16 @@ function requestPreloads() {
 		ship  	   : "Pictures/playerSheet.png",
 		bullet     : "Pictures/shot.png",
 		background : "Spacepic.png",
-		enemy	   : "Pictures/enemySheet.png"
+        enemy	   : "Pictures/enemySheet.png",
+        defender : "Pictures/defender.png",
+        play: "Pictures/play.png",
+        menu: "Pictures/menu.png",
+        control: "Pictures/control.png",
+        controls_active: "Pictures/controls_active.png",
+        black : "Pictures/black.png",
+        play1 : "Pictures/play1.png",
+        back : "Pictures/back.png",
+        back_active : "Pictures/back_active.png",
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -124,7 +124,17 @@ function preloadDone() {
     g_sprites.ship = new Sprite(g_images.ship);
     g_sprites.background = new Sprite(g_images.background);
     g_sprites.bullet = new Sprite(g_images.bullet);
-	g_sprites.enemy = new Sprite(g_images.enemy);
+    g_sprites.enemy = new Sprite(g_images.enemy);
+    g_sprites.play1 = new Sprite(g_images.play1);
+    g_sprites.black = new Sprite(g_images.black);
+    g_sprites.back = new Sprite(g_images.back);
+    g_sprites.back_active = new Sprite(g_images.back_active);
+    g_sprites.play = new Sprite(g_images.play);
+    g_sprites.defender = new Sprite(g_images.defender);
+    g_sprites.menu = new Sprite(g_images.menu);
+    g_sprites.menu = new Sprite(g_images.menu);
+    g_sprites.control = new Sprite(g_images.control);
+    g_sprites.controls_active = new Sprite(g_images.controls_active);
 	
 	entityManager.init();
     main.init();

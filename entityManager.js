@@ -139,15 +139,16 @@ render: function(ctx) {
 		}
 	}
 
-    for (var c = 0; c < this._categories.length; ++c) {
-     var aCategory = this._categories[c];
-     if (aCategory != this._rocks || this._bShowRocks) {
-         for (var i = 0; i < aCategory.length; ++i) {
-             aCategory[i].render(ctx);
-         }
-     }
-   }
-}
+    // TODO: Implement this
+    for (var c = 0; c < this._categories.length; c++) {
+        var aCategory = this._categories[c];
+        if (aCategory != this._rocks || this._bShowRocks) {
+            for (var i = 0; i < aCategory.length; i++) {
+                aCategory[i].render(ctx);
+            }
+        }
+      }
+    }
 
 }
 

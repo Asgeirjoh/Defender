@@ -16,13 +16,17 @@ function Bullet(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
+	
+	this.setup(descr);
 }
+
+Bullet.prototype = new Entity();
 
 // Convert times from seconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 1 * SECS_TO_NOMINALS;
 
 Bullet.prototype.update = function (du) {
-
+	
     if (this.lifeSpan - du <= 0) return -1;
 
     this.cx += this.velX * du;
@@ -48,12 +52,13 @@ Bullet.prototype.wrapPosition = function () {
 
 Bullet.prototype.render = function (ctx) {
 
-    var fadeThresh = Bullet.prototype.lifeSpan / 3;
-	let scale = 1;	
+    var fadeThresh = this.lifeSpan / 3;
+	let scale = 0.1;	
 	
 	ctx.globalAlpha = this.lifeSpan/fadeThresh;
+	
 	g_sprites.bullet.drawCentredAt(	
 		ctx, this.cx, this.cy, 0, scale);
-	
+
     ctx.globalAlpha = 1;
 };

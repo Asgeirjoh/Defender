@@ -12,6 +12,10 @@ with suitable 'data' and 'methods'.
 
 */
 
+/*
+0        1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+*/
 
 "use strict";
 
@@ -75,6 +79,12 @@ KILL_ME_NOW : -1,
 //
 deferredSetup : function () {
     this._categories = [this._rocks, this._bullets, this._ships, this._enemies];
+},
+
+init: function(){
+	   this.generateShip({
+		   cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
+		   cy: (g_canvas.height / 2) - (g_sprites.ship.getSpriteHeight() / 2)})
 },
 
 fireBullet: function(cx, cy, velX, velY) {	

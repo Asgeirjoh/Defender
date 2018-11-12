@@ -17,28 +17,17 @@ function Enemy(descr) {
         this[property] = descr[property];
     } 	
 	
-	this.cx = 200;
-	this.cy;
-	this.velX;
-	this.velY;
-	this.frame;
+	this.setup(descr);
 }
 
+Enemy.prototype = new Entity();
 
 Enemy.prototype.update = function(du){
-	this.cx = 200;
-	this.cy = 0;
-	this.velX = 1;
-	this.velY = 1;
-	this.frame = 1;
+
 }
 
 Enemy.prototype.render = function(ctx){
 	let scale = 1;
 
-	
-	g_sprites.enemy.drawCentredAt(
-		ctx, this.cx, this.cy,
-		this.frame, scale
-    );
+
 }

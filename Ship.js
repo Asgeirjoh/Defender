@@ -16,11 +16,15 @@ function Ship(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
+    this.setup(descr);
 
+ 
     // Remember my reset positions
     this.reset_cx = this.cx;
     this.reset_cy = this.cy;   
 }
+
+Ship.prototype = new Entity();
 
 Ship.prototype.KEY_UP = 'W'.charCodeAt(0);
 Ship.prototype.KEY_DOWN  = 'S'.charCodeAt(0);
@@ -30,128 +34,123 @@ Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
-Ship.prototype.cx = 0;
-Ship.prototype.cy = 0;
+Ship.prototype.cx = 200;
+Ship.prototype.cy = 200;
 Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.numSubSteps = 1;
 Ship.prototype.frame = 0;
-Ship.prototype.scale = 1;
+Ship.prototype.scale = 0.5;
 
 Ship.prototype.update = function(du) {
 	
     var steps = this.numSubSteps;
     var dStep = du / steps;
-	let vel = 10 * this.frame; 
-	let offsetBulletY = this.cy;
-	let offsetBulletX = this.cx + offset;
+	
+	let toLeft = (this.frame === 0)? -1 : this.frame;
+	let vel = 10 * toLeft;
+	
 	
     for (var i = 0; i < steps; ++i) {
-	   this.computeThrustMag(dStep);
-       this.computeUpandDown();	 
+	   this.computeSubStep(dStep);	 
     }
-	
-	// Firing a bullet
-    if (keys[this.KEY_FIRE]) {  
-    	entityManager.fireBullet(
-    	   offsetBulletX, offsetBulletY,
-    	   vel, 0);
-    }
+
+	// Fire a bullet.
+	this.maybeFireBullet();
 }
 
-var NOMINAL_THRUST = +0.2;
-var NOMINAL_DETHRUST  = +0.2;
+Ship.prototype.computeSubStep = function (du) {
+	
+    var accelX = this.computeThrustMagX();
+    var accelY = this.computeThrustMagY();
+ 
+    this.applyAccel(accelX, accelY, du);
+    
+    this.wrapPosition();   
+};
 
-Ship.prototype.computeThrustMag = function (du) {
-    var maxspeed = 12;
+var NOMINAL_THRUST = 0.2;
+var NOMINAL_RETRO  = 0.2;
+
+Ship.prototype.computeThrustMagX = function () {
+    
     var thrust = 0;
-    if ((keys[this.KEY_RIGHT]) && (this.velX < maxspeed)) {
-        thrust += NOMINAL_THRUST;		
-        this.applyAccel(NOMINAL_THRUST, du);
+   	
+    if (keys[this.KEY_RIGHT]) {
+        thrust += NOMINAL_THRUST;
     }
-    else if ((keys[this.KEY_LEFT]) && (this.velX > -maxspeed)) {
-        thrust -= NOMINAL_THRUST;		
-        this.applyAccel(-NOMINAL_THRUST, du);
-    }
-
-    if (thrust === 0 && this.velX > 0) {
-      this.applyAccel(-NOMINAL_DETHRUST, du);
-      if (this.velX > 0 && this.velX < 0.5) {
-        this.halt();
-      }
-    }
-    if (thrust === 0 && this.velX < 0) {
-      this.applyAccel(NOMINAL_DETHRUST, du);
-      if (this.velX < 0 && this.velX > -0.5) {
-        this.halt();
-      }
-    }
+    if (keys[this.KEY_LEFT]) {
+        thrust -= NOMINAL_RETRO;
+    }    
+	
     Background.prototype.wrapPosition(); // LAGA ÞETTA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     this.wrapPosition();  
 	this.updateFrame();
+	
+	return thrust;
 };
 
-Ship.prototype.computeUpandDown = function () {
-	
+Ship.prototype.computeThrustMagY = function (du) {
+
+	let thrust = 0;
+    
     if (keys[this.KEY_UP]) {
-        if (this.cy > 0) {
-          this.cy -= 5;
-      }	  
+        thrust -= NOMINAL_THRUST;
     }
     if (keys[this.KEY_DOWN]) {
-      if (this.cy < g_canvas.height - g_sprites.ship.getSpriteHeight()) {
-        this.cy += 5;
-      }
-    }
+        thrust += NOMINAL_RETRO;
+    } 
+	
+	return thrust;
 };
 
-Ship.prototype.applyAccel = function (accelX, du) {
-
+Ship.prototype.applyAccel = function (accelX, accelY, du) {
+    
     // u = original velocity
     var oldVelX = this.velX;
-
+    var oldVelY = this.velY;
+    
     // v = u + at
     this.velX += accelX * du;
+    this.velY += accelY * du; 
 
     // v_ave = (u + v) / 2
     var aveVelX = (oldVelX + this.velX) / 2;
-
+    var aveVelY = (oldVelY + this.velY) / 2;
+    
     // Decide whether to use the average or not (average is best!)
     var intervalVelX = g_useAveVel ? aveVelX : this.velX;
-
-    // s = s + v_ave * t
-    var nextX = this.cx + intervalVelX * du;
-
-    // bounce
-    if (g_useGravity) {
-
-	var minY = g_sprites.ship.getSpriteHeight();
-	var maxY = g_canvas.height - minY;
-
-	// Ignore the bounce if the ship is already in
-	// the "border zone" (to avoid trapping them there)
-	if (this.cy > maxY || this.cy < minY) {
-	    // do nothing
-	} else if (nextY > maxY || nextY < minY) {
-            this.velY = oldVelY * (-0.9);
-            intervalVelY = this.velY;
-        }
-    }
-
+    var intervalVelY = g_useAveVel ? aveVelY : this.velY;
+       
     // s = s + v_ave * t
     var x = du * intervalVelX;
-    this.cx += x;
+	this.cx += x;
+    this.cy += du * intervalVelY;
     setOffset(x);
+};
+
+Ship.prototype.maybeFireBullet = function () {
+
+    if (keys[this.KEY_FIRE]) {
+    
+        let launchDist = 50;
+        let launchVel = 10;	
+          
+
+        entityManager.fireBullet(
+           this.cx, this.cy,
+           this.velX + launchVel, 0);           
+    }    
 };
 
 Ship.prototype.setPos = function (cx, cy) {
     this.cx = cx;
     this.cy = cy;
-}
+};
 
 Ship.prototype.getPos = function () {
     return {posX : this.cx, posY : this.cy};
-}
+};
 
 Ship.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
@@ -173,7 +172,7 @@ Ship.prototype.updateFrame = function(){
     if (keys[this.KEY_RIGHT]) {    
 		this.frame = 1;			
     }
-}
+};
 
 Ship.prototype.wrapPosition = function () {
     this.cx = util.wrapRange(this.cx, 0, mapSize);   
@@ -181,8 +180,7 @@ Ship.prototype.wrapPosition = function () {
 
 Ship.prototype.render = function (ctx) {
 	
-    g_sprites.ship.drawCentredAt(
-		ctx, this.cx + offset, this.cy,
-		this.frame, this.scale
-    );
+    g_sprites.ship.drawWrappedCentredAt(
+	ctx, this.cx, this.cy, this.frame, this.scale);
+    //this.sprite.scale = origScale;
 };

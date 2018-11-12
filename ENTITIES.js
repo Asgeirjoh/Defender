@@ -14,14 +14,9 @@ var g_ctx = g_canvas.getContext("2d");
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-// ====================
-// CREATE INITIAL SHIPS
-// ====================
-
-entityManager.generateShip({
-    cx : 0,
-    cy : 0
-});
+// =========================
+// CREATE INITIAL BACKGROUND
+// =========================
 
 var Background1 = new Background({
     cx : 0,
@@ -130,6 +125,8 @@ function preloadDone() {
     g_sprites.background = new Sprite(g_images.background);
     g_sprites.bullet = new Sprite(g_images.bullet);
 	g_sprites.enemy = new Sprite(g_images.enemy);
+	
+	entityManager.init();
     main.init();
 }
 

@@ -99,19 +99,19 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-		ship  	   : "Pictures/playerSheet.png",
-		bullet     : "Pictures/shot.png",
-		background : "Spacepic.png",
-        enemy	   : "Pictures/enemySheet.png",
-        defender : "Pictures/defender.png",
-        play: "Pictures/play.png",
-        menu: "Pictures/menu.png",
-        control: "Pictures/control.png",
-        controls_active: "Pictures/controls_active.png",
-        black : "Pictures/black.png",
-        play1 : "Pictures/play1.png",
-        back : "Pictures/back.png",
-        back_active : "Pictures/back_active.png",
+		ship  	   		: "Pictures/playerSheet.png",
+		bullet     		: "Pictures/shot.png",
+		background 		: "Pictures/Spacepic.png",
+        enemy	   		: "Pictures/enemySheet.png",
+        defender   		: "Pictures/defender.png",
+        play	   		: "Pictures/play.png",
+        menu			: "Pictures/menu.png",
+        control			: "Pictures/control.png",
+        controls_active	: "Pictures/controls_active.png",
+        black 			: "Pictures/black.png",
+        play1 			: "Pictures/play1.png",
+        back 			: "Pictures/back.png",
+        back_active 	: "Pictures/back_active.png",
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);

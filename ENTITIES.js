@@ -24,6 +24,7 @@ var Background1 = new Background({
     velX : 0
 });
 
+
 // =============
 // GATHER INPUTS
 // =============
@@ -112,6 +113,8 @@ function requestPreloads() {
         play1 			: "Pictures/play1.png",
         back 			: "Pictures/back.png",
         back_active 	: "Pictures/back_active.png",
+        man             : "Pictures/man.png",
+        mans            : "Pictures/mans.png",
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -135,9 +138,10 @@ function preloadDone() {
     g_sprites.menu = new Sprite(g_images.menu);
     g_sprites.control = new Sprite(g_images.control);
     g_sprites.controls_active = new Sprite(g_images.controls_active);
-
-	entityManager.init();
+    g_sprites.man = new Sprite(g_images.man);
+    g_sprites.mans = new Sprite(g_images.mans);
     main.init();
+
 }
 
 // Kick it off

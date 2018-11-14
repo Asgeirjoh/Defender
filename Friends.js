@@ -42,6 +42,7 @@ Friends.prototype.update = function(du) {
     }else if(this.frame === 1){
         this.cx -= 0.2;
     }
+    this.wrapPosition();
 };
 
 
@@ -79,7 +80,7 @@ Friends.prototype.updateFrame = function(){
 };
 
 Friends.prototype.wrapPosition = function () {
-    offset = util.wrapRange(offset, -3000, 0);
+    this.cx = util.wrapRange(this.cx, 0, mapSize);
 };
 
 Friends.prototype.render = function (ctx) {

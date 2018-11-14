@@ -78,8 +78,6 @@ Ship.prototype.computeThrustMagX = function () {
     if (keys[this.KEY_LEFT]) {
         thrust -= NOMINAL_THRUSTX;
     }
-
-    Background.prototype.wrapPosition(); // LAGA ÞETTA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     this.wrapPosition();
 	this.updateFrame();
 

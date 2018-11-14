@@ -93,6 +93,32 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, frame, sc
     // Get "screen height"
     var sh = g_canvas.height;
 
-    // Draw primary instance
     this.drawCentredAt(ctx, cx, cy, frame, scale);
+};
+
+Sprite.prototype.drawWrappedCentred = function (ctx, frame, cx, cy) {
+
+    // Get "screen width"
+    var sw = g_canvas.width;
+
+    // Draw primary instance
+    this.drawWrappedVerticalCentred(ctx, cx, cy, frame);
+
+    // Left and Right wraps
+    this.drawWrappedVerticalCentred(ctx, cx - mapSize, cy, frame);
+    this.drawWrappedVerticalCentred(ctx, cx + mapSize, cy, frame);
+};
+
+Sprite.prototype.drawWrappedVerticalCentred = function (ctx, cx, cy, frame) {
+
+    // Get "screen height"
+    var sh = g_canvas.height;
+
+    this.drawSpriteIndex(ctx, frame, cx, cy);
+};
+
+Sprite.prototype.drawSpriteIndex = function(ctx, index, cx, cy){
+    ctx.save();
+    ctx.drawImage(this.image, (index*this.width/4)-1, 0, this.width/4,50, cx-this.width/3/2, cy-this.height/2, this.width/4, this.height);
+    ctx.restore();
 };

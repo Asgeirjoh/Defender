@@ -29,9 +29,17 @@ _rocks   : [],
 _bullets : [],
 _ships   : [],
 _enemies : [],
+_friends : [],
 
 _bShowRocks : false,
 
+
+_generateFriends : function() {
+    var NUM = 40;
+    for (var i = 0; i < NUM; ++i) {
+        this.generateFriends({cx: 500 + Math.random()*mapSize,cy:this.cy});
+    }
+},
 // "PRIVATE" METHODS
 
 _findNearestShip : function(posX, posY) {
@@ -78,13 +86,15 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._rocks, this._bullets, this._ships, this._enemies];
+    this._categories = [this._bullets, this._ships, this._enemies, this._friends];
 },
 
 init: function(){
+    this._generateFriends();
 	   this.generateShip({
 		   cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
-		   cy: (g_canvas.height / 2) - (g_sprites.ship.getSpriteHeight() / 2)})
+           cy: (g_canvas.height / 2) - (g_sprites.ship.getSpriteHeight() / 2)})
+           
 },
 
 fireBullet: function(cx, cy, velX, velY) {	
@@ -99,6 +109,10 @@ generateEnemy : function(cx, cy, velX, velY, frame){
 	this._enemies.push(new Enemy({cx: cx, cy: cy,
 								  velX: velX, velY: velY,
 								  frame: frame}));
+},
+
+generateFriends : function(descr) {   
+    this._friends.push(new Friends(descr));
 },
 
 generateShip : function(descr) {   

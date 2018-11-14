@@ -23,7 +23,7 @@ var NOMINAL_UPDATE_INTERVAL = 16.666;
 var SECS_TO_NOMINALS = 1000 / NOMINAL_UPDATE_INTERVAL;
 
 var offset = 0;
-var mapSize = 2000;
+var mapSize = 3000;
 
 function setOffset(x) {
     offset += -x;

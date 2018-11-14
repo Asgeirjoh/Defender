@@ -33,8 +33,8 @@ var gameManager = {
 
 	_renderStartScreen :function(ctx){
 		g_sprites.defender.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2,0);
-		g_sprites.play.drawCentred(ctx,g_canvas.width/2,280,0);
-		g_sprites.control.drawCentred(ctx,g_canvas.width/2,310,0);
+		g_sprites.play.drawCentred(ctx,g_canvas.width/2,320,0);
+		g_sprites.control.drawCentred(ctx,g_canvas.width/2,350,0);
 	},
 
 	_updateStartScreen: function(ctx)	{
@@ -75,7 +75,7 @@ var gameManager = {
 
 	_renderControlScreen :function(ctx){
 		g_sprites.menu.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2);
-		g_sprites.back.drawCentred(ctx,400,380);
+		g_sprites.back.drawCentred(ctx,g_canvas.width/2,470);
 
 		g_sprites.back.image = g_images.back;
 		if(this._isMouseOver(g_sprites.back)){

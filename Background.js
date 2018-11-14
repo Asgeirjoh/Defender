@@ -22,7 +22,7 @@ Background.prototype.render = function(du) {
 };
 
 Background.prototype.wrapPosition = function(du) {
-    offset = util.wrapRange(offset, -1600, 400);
+    offset = util.wrapRange(offset, -3000, 0);
 };
 
 function camera() {

@@ -101,7 +101,7 @@ function requestPreloads() {
     var requiredImages = {
 		ship  	   		: "Pictures/playerSheet.png",
 		bullet     		: "Pictures/shot.png",
-		background 		: "Pictures/Spacepic.png",
+		background 		: "Pictures/Background.png",
         enemy	   		: "Pictures/enemySheet.png",
         defender   		: "Pictures/defender.png",
         play	   		: "Pictures/play.png",
@@ -135,7 +135,7 @@ function preloadDone() {
     g_sprites.menu = new Sprite(g_images.menu);
     g_sprites.control = new Sprite(g_images.control);
     g_sprites.controls_active = new Sprite(g_images.controls_active);
-	
+
 	entityManager.init();
     main.init();
 }

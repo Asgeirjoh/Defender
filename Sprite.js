@@ -84,8 +84,8 @@ Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, frame, scale) {
     this.drawWrappedVerticalCentredAt(ctx, cx, cy, frame, scale);
 
     // Left and Right wraps
-    this.drawWrappedVerticalCentredAt(ctx, cx - sw, cy, frame, scale);
-    this.drawWrappedVerticalCentredAt(ctx, cx + sw, cy, frame, scale);
+    this.drawWrappedVerticalCentredAt(ctx, cx - mapSize, cy, frame, scale);
+    this.drawWrappedVerticalCentredAt(ctx, cx + mapSize, cy, frame, scale);
 };
 
 Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, frame, scale) {
@@ -95,8 +95,4 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, frame, sc
 
     // Draw primary instance
     this.drawCentredAt(ctx, cx, cy, frame, scale);
-
-    // Top and Bottom wraps
-    this.drawCentredAt(ctx, cx, cy - sh, frame, scale);
-    this.drawCentredAt(ctx, cx, cy + sh, frame, scale);
 };

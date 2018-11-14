@@ -61,20 +61,20 @@ Friends.prototype.reset = function () {
 };
 
 Friends.prototype.updateFrames = function(){
-    var a = Math.floor(Math.random() * 2); 
+    var a = Math.floor(Math.random() * 2);
     this.frame = a;
-} 
+}
 
 
 
 Friends.prototype.updateFrame = function(){
-	
+
 	if (keys[this.KEY_LEFT]) {
-		this.frame = 0;		       	
+		this.frame = 0;
     }
-	
-    if (keys[this.KEY_RIGHT]) {    
-		this.frame = 1;			
+
+    if (keys[this.KEY_RIGHT]) {
+		this.frame = 1;
     }
 };
 
@@ -82,7 +82,7 @@ Friends.prototype.wrapPosition = function () {
     offset = util.wrapRange(offset, -3000, 0);
 };
 
-Friends.prototype.render = function (ctx) {	
-    g_sprites.mans.drawCentredAt(
+Friends.prototype.render = function (ctx) {
+    g_sprites.mans.drawWrappedCentredAt(
         ctx, this.cx+offset, this.cy, this.frame, this.scale);
 };

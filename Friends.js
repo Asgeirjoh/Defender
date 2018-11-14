@@ -16,8 +16,11 @@ function Friends(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-    this.randomisePosition();
     this.updateFrames();
+    this.stepLength = 10;
+	this.leftStepCount = this.stepLength;
+	this.rightStepCount = this.stepLength;
+    this.randomisePosition();
 
 };
 
@@ -27,20 +30,35 @@ Friends.prototype.randomisePosition = function () {
     this.cx = this.cx || Math.random() * g_canvas.width;
     this.cy = 490;
 };
-// Initial, inheritable, default values
-Friends.prototype.cx = 200;
-Friends.prototype.cy = 200;
-Friends.prototype.velX = 0;
-Friends.prototype.velY = 0;
-Friends.prototype.numSubSteps = 1;
-Friends.prototype.frame = 0;
-Friends.prototype.scale = 0.5;
 
 Friends.prototype.update = function(du) {
-    if(this.frame === 0){
+
+    if(this.frameIndex === 0 || this.frameIndex === 1){
+		this.cx -= 0.2;
+		this.rightStepCount = this.stepLength;
+		if(this.leftStepCount == this.stepLength){
+			if(this.frameIndex != 0){
+				this.frameIndex = 0;
+			}
+			else if(this.frameIndex == 0){
+				this.frameIndex = 1;
+			}
+			this.leftStepCount = 0;
+		}
+		else this.leftStepCount++;
+    }else if(this.frameIndex === 3 || this.frameIndex === 2){
         this.cx += 0.2;
-    }else if(this.frame === 1){
-        this.cx -= 0.2;
+		this.leftStepCount = this.stepLength;
+		if(this.rightStepCount == this.stepLength){
+			if(this.frameIndex != 3){
+				this.frameIndex = 3;
+			}
+			else if(this.frameIndex == 3){
+				this.frameIndex = 2;
+			}
+			this.rightStepCount = 0;
+		}
+		else this.rightStepCount++;
     }
 };
 
@@ -61,28 +79,15 @@ Friends.prototype.reset = function () {
 };
 
 Friends.prototype.updateFrames = function(){
-    var a = Math.floor(Math.random() * 2);
-    this.frame = a;
+    var a = Math.floor(Math.random() * 4);
+    this.frameIndex = a;
 }
-
-
-
-Friends.prototype.updateFrame = function(){
-
-	if (keys[this.KEY_LEFT]) {
-		this.frame = 0;
-    }
-
-    if (keys[this.KEY_RIGHT]) {
-		this.frame = 1;
-    }
-};
 
 Friends.prototype.wrapPosition = function () {
     offset = util.wrapRange(offset, -3000, 0);
 };
 
 Friends.prototype.render = function (ctx) {
-    g_sprites.mans.drawWrappedCentredAt(
-        ctx, this.cx+offset, this.cy, this.frame, this.scale);
+    g_sprites.mans.drawWrappedCentred(
+        ctx,this.frameIndex, this.cx+offset, this.cy);
 };

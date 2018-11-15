@@ -85,7 +85,8 @@ Friends.prototype.updateFrames = function(){
 }
 
 Friends.prototype.wrapPosition = function () {
-    this.cx = util.wrapRange(this.cx, 0, mapSize);
+    var halfwidth = g_canvas.width/2;
+    this.cx = util.wrapRange(this.cx, halfwidth, mapSize + halfwidth);
 };
 
 Friends.prototype.render = function (ctx) {

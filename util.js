@@ -5,7 +5,6 @@
 
 "use strict";
 
-
 var util = {
 
 
@@ -51,6 +50,16 @@ randRange: function(min, max) {
 
 square: function(x) {
     return x*x;
+},
+
+playAudio: function(sound) {
+  if (g_toggleAudio) {
+    if (sound.volume == 1.0) {
+      sound.volume = g_audioVolume;
+    }
+    sound.currentTime = 0;
+    sound.play();
+  }
 },
 
 

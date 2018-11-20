@@ -14,17 +14,13 @@ Background.prototype.cx = 0;
 Background.prototype.velX = 0;
 
 Background.prototype.update = function(du) {
+    this.wrapPosition();
 };
 
-Background.prototype.render = function(du) {
-    this.wrapPosition();
+Background.prototype.render = function(ctx) {
     g_sprites.background.drawAt(ctx, this.cx + offset, 0);
 };
 
 Background.prototype.wrapPosition = function(du) {
-    offset = util.wrapRange(offset, -3000, 0);
+    offset = util.wrapRange(offset, -mapSize, 0);
 };
-
-function camera() {
-
-}

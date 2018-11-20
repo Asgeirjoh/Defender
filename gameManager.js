@@ -1,4 +1,7 @@
 "use strict";
+var g_toggleAudio = true;
+
+var KEY_AUDIO = keyCode('M');
 
 var gameManager = {
 
@@ -29,6 +32,10 @@ var gameManager = {
 		else if (this.position === this.controlScreen){
 			this._updateControlScreen(du);
 		}
+	},
+
+	toggleAudio: function () {
+		if (eatKey(KEY_AUDIO)) g_toggleAudio = !g_toggleAudio;
 	},
 
 	_renderStartScreen :function(ctx){
@@ -67,6 +74,7 @@ var gameManager = {
 	},
 
 	_updateGameScreen: function(du){
+		Background1.update(du);
 	    processDiagnostics();
 		entityManager.update(du);
 		eatKey(Ship.prototype.KEY_FIRE);

@@ -17,7 +17,7 @@ function Ship(descr) {
         this[property] = descr[property];
     }
     this.setup(descr);
-
+    util.playAudio(this.flySound);
 
     // Remember my reset positions
     this.reset_cx = this.cx;
@@ -26,10 +26,16 @@ function Ship(descr) {
 
 Ship.prototype = new Entity();
 
+Ship.prototype.flySound = new Audio("Sounds/Flying.wav");
+Ship.prototype.flySound.volume = 0.1;
+Ship.prototype.deathSound = new Audio("Sounds/shipDeath.wav");
+Ship.prototype.warpSound = new Audio("Sounds/Teleport.wav");
+
 Ship.prototype.KEY_UP = 'W'.charCodeAt(0);
 Ship.prototype.KEY_DOWN  = 'S'.charCodeAt(0);
 Ship.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
+Ship.prototype.KEY_WARP = 'E'.charCodeAt(0);
 
 Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
 
@@ -41,6 +47,8 @@ Ship.prototype.velY = 0;
 Ship.prototype.numSubSteps = 1;
 Ship.prototype.frame = 0;
 Ship.prototype.scale = 0.5;
+Ship.prototype.isWarping = false;
+Ship.prototype.warpingScale = -1;
 
 Ship.prototype.update = function(du) {
 
@@ -51,8 +59,10 @@ Ship.prototype.update = function(du) {
 	   this.computeSubStep(dStep);
     }
 
-	// Fire a bullet.
-	this.maybeFireBullet();
+    this.warp();
+    // Fire a bullet.
+  	this.maybeFireBullet();
+    this.playFlyingSound();
 }
 
 Ship.prototype.computeSubStep = function (du) {
@@ -74,9 +84,14 @@ Ship.prototype.computeThrustMagX = function () {
 
     if (keys[this.KEY_RIGHT]) {
         thrust += NOMINAL_THRUSTX;
+        this.flySound.volume = 0.5;
     }
     if (keys[this.KEY_LEFT]) {
         thrust -= NOMINAL_THRUSTX;
+        this.flySound.volume = 0.5;
+    }
+    if (thrust == 0) {
+      this.flySound.volume = 0.1;
     }
     this.wrapPosition();
 	this.updateFrame();
@@ -204,4 +219,46 @@ Ship.prototype.wrapPosition = function () {
 Ship.prototype.render = function (ctx) {
     g_sprites.ship.drawWrappedCentredAt(
 	ctx, this.cx, this.cy, this.frame, this.scale);
+};
+
+Ship.prototype.playFlyingSound = function () {
+    if (g_toggleAudio) {
+      var buffer = .5;
+      if (this.flySound.currentTime > this.flySound.duration - buffer) {
+        this.flySound.currentTime = 0;
+        this.flySound.play();
+      }
+    }
+};
+
+Ship.prototype.warp = function () {
+  if (eatKey(this.KEY_WARP) && !this.isWarping) {
+    this.isWarping = true;
+    this.halt();
+    util.playAudio(this.warpSound);
+    this.warpingScale = -1;
+  }
+  if (this.isWarping) {
+    this.updateWarp();
+    this.halt();
+  }
+};
+
+Ship.prototype.updateWarp = function () {
+  this.scale += this.warpingScale * 0.01;
+
+  if (this.scale < 0.1) {
+    // Warp to random position x
+    var x = Math.random() * -mapSize;
+    setOffset(x);
+    // Warp to random position y
+    var y = Math.random() * (g_canvas.height - g_sprites.mans.getSpriteHeight());
+    this.cy = y;
+    this.warpingScale = 1;
+    this.scale = 0.11;
+  }
+  if (this.scale > 0.5) {
+    this.scale = 0.5;
+    this.isWarping = false;
+  }
 };

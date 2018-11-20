@@ -26,6 +26,11 @@ function Friends(descr) {
 
 Friends.prototype = new Entity();
 
+Friends.prototype.friendAbductedSound = new Audio("Sounds/civilAbducted.wav");
+Friends.prototype.friendFallingSound = new Audio("Sounds/civilFalling.wav");
+Friends.prototype.friendPickUpSound = new Audio("Sounds/civilPickUp.wav");
+Friends.prototype.friendSavedSound = new Audio("Sounds/civilSaved.wav");
+
 Friends.prototype.randomisePosition = function () {
     this.cx = this.cx || Math.random() * g_canvas.width;
     this.cy = 490;

@@ -45,7 +45,7 @@ var g_allowMixedActions = true;
 var g_useGravity = false;
 var g_useAveVel = true;
 
-var KEY_MIXED   = keyCode('M');;
+var KEY_MIXED   = keyCode('N');
 var KEY_GRAVITY = keyCode('G');
 var KEY_AVE_VEL = keyCode('V');
 

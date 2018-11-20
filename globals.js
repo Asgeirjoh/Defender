@@ -24,7 +24,7 @@ var SECS_TO_NOMINALS = 1000 / NOMINAL_UPDATE_INTERVAL;
 
 var offset = 0;
 var mapSize = 3000;
-var g_audioVolume = 0.5;
+var g_audioVolume = 0.3;
 
 function setOffset(x) {
     offset += -x;

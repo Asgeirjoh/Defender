@@ -7,8 +7,10 @@ var gameManager = {
 
 	startScreen : 0,
 	gameScreen : 1,
-	controlScreen: 2,
-	position: 0,
+	controlScreen : 2,
+	position : 0,
+	startUp : true,
+	startUpSound : new Audio("Sounds/startSound.wav"),
 
 	renderScreen: function(ctx){
 		if(this.position === this.startScreen){
@@ -74,6 +76,10 @@ var gameManager = {
 	},
 
 	_updateGameScreen: function(du){
+		if(this.startUp) {
+			util.playAudio(this.startUpSound);
+			this.startUp = false;
+		}
 		Background1.update(du);
 	    processDiagnostics();
 		entityManager.update(du);

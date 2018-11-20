@@ -15,19 +15,29 @@
 function Enemy(descr) {
     for (var property in descr) {
         this[property] = descr[property];
-    } 	
-	
+    }
+
 	this.setup(descr);
 }
 
 Enemy.prototype = new Entity();
 
-Enemy.prototype.update = function(du){
+Enemy.prototype.smartBombs = 3;
 
+Enemy.prototype.KEY_BOMB = 'B'.charCodeAt(0);
+
+Enemy.prototype.update = function(du){
 }
 
 Enemy.prototype.render = function(ctx){
 	let scale = 1;
-
-
+  this.renderBombs();
 }
+
+Enemy.prototype.renderBombs = function () {
+  var x = 15;
+  for (var i = 1; i <= this.smartBombs; i++) {
+    g_sprites.bombs.drawCentredAt(ctx, x, 30, 0, 0.4);
+    x+=35;
+  }
+};

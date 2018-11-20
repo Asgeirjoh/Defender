@@ -115,6 +115,7 @@ function requestPreloads() {
         back_active 	: "Pictures/back_active.png",
         man             : "Pictures/man.png",
         mans            : "Pictures/mans.png",
+        bombs           : "Pictures/bomb.png",
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -140,6 +141,7 @@ function preloadDone() {
     g_sprites.controls_active = new Sprite(g_images.controls_active);
     g_sprites.man = new Sprite(g_images.man);
     g_sprites.mans = new Sprite(g_images.mans);
+    g_sprites.bombs = new Sprite(g_images.bombs);
     main.init();
 
 }

@@ -47,6 +47,7 @@ Ship.prototype.velY = 0;
 Ship.prototype.numSubSteps = 1;
 Ship.prototype.frame = 0;
 Ship.prototype.scale = 0.5;
+Ship.prototype.lives = 3;
 Ship.prototype.isWarping = false;
 Ship.prototype.warpingScale = -1;
 
@@ -84,11 +85,11 @@ Ship.prototype.computeThrustMagX = function () {
 
     if (keys[this.KEY_RIGHT]) {
         thrust += NOMINAL_THRUSTX;
-        this.flySound.volume = 0.5;
+        this.flySound.volume = g_audioVolume;
     }
     if (keys[this.KEY_LEFT]) {
         thrust -= NOMINAL_THRUSTX;
-        this.flySound.volume = 0.5;
+        this.flySound.volume = g_audioVolume;
     }
     if (thrust == 0) {
       this.flySound.volume = 0.1;
@@ -219,6 +220,7 @@ Ship.prototype.wrapPosition = function () {
 Ship.prototype.render = function (ctx) {
     g_sprites.ship.drawWrappedCentredAt(
 	ctx, this.cx, this.cy, this.frame, this.scale);
+  this.renderLives();
 };
 
 Ship.prototype.playFlyingSound = function () {
@@ -260,5 +262,13 @@ Ship.prototype.updateWarp = function () {
   if (this.scale > 0.5) {
     this.scale = 0.5;
     this.isWarping = false;
+  }
+};
+
+Ship.prototype.renderLives = function () {
+  var x = 15;
+  for (var i = 1; i <= this.lives; i++) {
+    g_sprites.ship.drawCentredAt(ctx, x, 10, 1, 0.2);
+    x+=35;
   }
 };

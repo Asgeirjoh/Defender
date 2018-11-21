@@ -16,7 +16,7 @@ function Bullet(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-    util.playAudio(this.shoot);
+    util.playAudio(shootSound);
     //this.shoot.currentTime = 0;
     //this.shoot.play();
 	  this.setup(descr);
@@ -24,8 +24,6 @@ function Bullet(descr) {
 
 Bullet.prototype = new Entity();
 
-Bullet.prototype.shoot = new Audio("Sounds/shipShotLong.wav");
-Bullet.prototype.shoot.volume = 0.5;
 // Convert times from seconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 1 * SECS_TO_NOMINALS;
 

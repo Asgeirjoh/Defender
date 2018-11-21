@@ -1,5 +1,4 @@
 "use strict";
-var g_toggleAudio = true;
 
 var KEY_AUDIO = keyCode('M');
 
@@ -11,7 +10,6 @@ var gameManager = {
 	position : 0,
 	score : 0,
 	startUp : true,
-	startUpSound : new Audio("Sounds/startSound.wav"),
 
 	renderScreen: function(ctx){
 		if(this.position === this.startScreen){
@@ -79,7 +77,7 @@ var gameManager = {
 
 	_updateGameScreen: function(du){
 		if(this.startUp) {
-			util.playAudio(this.startUpSound);
+			util.playAudio(startUpSound);
 			this.startUp = false;
 		}
 		Background1.update(du);

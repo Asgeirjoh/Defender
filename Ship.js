@@ -17,7 +17,7 @@ function Ship(descr) {
         this[property] = descr[property];
     }
     this.setup(descr);
-    util.playAudio(this.flySound);
+    util.playAudio(flySound);
 
     // Remember my reset positions
     this.reset_cx = this.cx;
@@ -25,11 +25,6 @@ function Ship(descr) {
 }
 
 Ship.prototype = new Entity();
-
-Ship.prototype.flySound = new Audio("Sounds/Flying.wav");
-Ship.prototype.flySound.volume = 0.1;
-Ship.prototype.deathSound = new Audio("Sounds/shipDeath.wav");
-Ship.prototype.warpSound = new Audio("Sounds/Teleport.wav");
 
 Ship.prototype.KEY_UP = 'W'.charCodeAt(0);
 Ship.prototype.KEY_DOWN  = 'S'.charCodeAt(0);
@@ -85,14 +80,14 @@ Ship.prototype.computeThrustMagX = function () {
 
     if (keys[this.KEY_RIGHT]) {
         thrust += NOMINAL_THRUSTX;
-        this.flySound.volume = g_audioVolume;
+        flySound.volume = g_audioVolume;
     }
     if (keys[this.KEY_LEFT]) {
         thrust -= NOMINAL_THRUSTX;
-        this.flySound.volume = g_audioVolume;
+        flySound.volume = g_audioVolume;
     }
     if (thrust == 0) {
-      this.flySound.volume = 0.1;
+      flySound.volume = 0.1;
     }
     this.wrapPosition();
 	this.updateFrame();
@@ -226,9 +221,9 @@ Ship.prototype.render = function (ctx) {
 Ship.prototype.playFlyingSound = function () {
     if (g_toggleAudio) {
       var buffer = .5;
-      if (this.flySound.currentTime > this.flySound.duration - buffer) {
-        this.flySound.currentTime = 0;
-        this.flySound.play();
+      if (flySound.currentTime > flySound.duration - buffer) {
+        flySound.currentTime = 0;
+        flySound.play();
       }
     }
 };
@@ -237,7 +232,7 @@ Ship.prototype.warp = function () {
   if (eatKey(this.KEY_WARP) && !this.isWarping) {
     this.isWarping = true;
     this.halt();
-    util.playAudio(this.warpSound);
+    util.playAudio(warpSound);
     this.warpingScale = -1;
   }
   if (this.isWarping) {

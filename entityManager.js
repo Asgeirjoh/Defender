@@ -35,7 +35,7 @@ _bShowRocks : false,
 
 
 _generateFriends : function() {
-    var NUM = 40;
+    var NUM = 20;
     for (var i = 0; i < NUM; ++i) {
         this.generateFriends({cx: 500 + Math.random()*mapSize,cy:this.cy});
     }
@@ -132,6 +132,10 @@ haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
 },
 
+_renderScore: function(){
+    util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 30);
+},
+
 update: function(du) {
 	
     for (var c = 0; c < this._categories.length; ++c) {
@@ -143,6 +147,25 @@ update: function(du) {
         };
       }
     } 
+},
+resetGame: function() {
+
+    for(var i = 0; i < this._friends.length; i++)
+    {
+        this._friends[i].kill();
+    }
+    for(var i = 0; i < this._ships.length; i++)
+    {
+        this._ships[i].kill();
+    }
+    for(var i = 0; i < this._enemies.length; i++)
+    {
+        this._enemies[i].kill();
+    }
+    for(var i = 0; i < this._bullets.length; i++)
+    {
+        this._bullets[i].kill();
+    }
 },
 
 render: function(ctx) {

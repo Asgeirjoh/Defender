@@ -28,6 +28,8 @@ Bullet.prototype = new Entity();
 Bullet.prototype.lifeSpan = 1 * SECS_TO_NOMINALS;
 
 Bullet.prototype.update = function (du) {
+    if(this._isDeadNow)
+		return entityManager.KILL_ME_NOW
 
     if (this.lifeSpan - du <= 0) return -1;
 

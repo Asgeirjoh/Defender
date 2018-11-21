@@ -1,15 +1,20 @@
 "use strict";
+var g_toggleAudio = true;
 
 var KEY_AUDIO = keyCode('M');
+var KEY_K = keyCode('K');
 
 var gameManager = {
 
 	startScreen : 0,
 	gameScreen : 1,
 	controlScreen : 2,
-	position : 0,
+	gamelost : 3,
 	score : 0,
+	position : 0,
+	gameOver : false,
 	startUp : true,
+	startUpSound : new Audio("Sounds/startSound.wav"),
 
 	renderScreen: function(ctx){
 		if(this.position === this.startScreen){
@@ -20,6 +25,9 @@ var gameManager = {
 		}
 		else if(this.position === this.controlScreen){
 			this._renderControlScreen(ctx);
+		}
+		else if(this.position === this.gamelost){
+			this._renderGameWonScreen(ctx);
 		}
 	},
 
@@ -32,6 +40,9 @@ var gameManager = {
 		}
 		else if (this.position === this.controlScreen){
 			this._updateControlScreen(du);
+		}
+		else if(this.position === this.gamelost){
+			this._updateGameWonScreen(ctx);
 		}
 	},
 
@@ -69,6 +80,9 @@ var gameManager = {
 		return false;
 	},
 
+
+	},
+
 	_renderGameScreen :function(ctx){
 		Background1.render(ctx);
 		entityManager.render(ctx);
@@ -77,13 +91,17 @@ var gameManager = {
 
 	_updateGameScreen: function(du){
 		if(this.startUp) {
-			util.playAudio(startUpSound);
+			util.playAudio(this.startUpSound);
 			this.startUp = false;
 		}
 		Background1.update(du);
 	    processDiagnostics();
 		entityManager.update(du);
 		eatKey(Ship.prototype.KEY_FIRE);
+	    if(this.gameOver){
+	    	console.log("gamelost");
+			this.position = this.gamelost;
+	    }
 	},
 
 
@@ -101,10 +119,9 @@ var gameManager = {
 	_updateControlScreen: function(du){
 
 	},
-	_renderScore: function(){
-		util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 30);
-	},
 	reset: function(du){
+		this.gameOver = false;
 		entityManager.init();
+		entityManager.resetGame();
 	},
 }

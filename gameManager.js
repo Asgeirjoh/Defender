@@ -80,6 +80,27 @@ var gameManager = {
 		return false;
 	},
 
+	_renderScore: function(){
+		util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 30);
+	},
+
+
+	_renderGameWonScreen: function(du){
+		g_sprites.gameOver.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2,0);
+		util.drawLetters(ctx,"Your Score is: "+ this.score,"end",g_canvas.width/2+100, 30)
+		g_sprites.playAgain.drawCentred(ctx,g_canvas.width/2,400,0);
+		g_sprites.playAgain.image = g_images.playAgain;
+		if(this._isMouseOver(g_sprites.playAgain)){
+			g_sprites.playAgain.image = g_images.playAgain1;
+			if(g_mouseButton){
+				this.reset();
+				this.score = 0;
+				this.position = this.startScreen;
+			}
+		}
+	},
+
+	_updateGameWonScreen: function(du){
 
 	},
 

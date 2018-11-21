@@ -104,6 +104,15 @@ fillBox: function (ctx, x, y, w, h, style) {
     ctx.fillStyle = style;
     ctx.fillRect(x, y, w, h);
     ctx.fillStyle = oldStyle;
+},
+
+drawLetters: function (ctx, text, allign, x, y) {
+    var oldStyle = ctx.fillStyle;
+    ctx.fillStyle = "#FFD11A";
+    ctx.font = "30px Arial";
+    ctx.textAlign=allign;
+    ctx.fillText(text, x, y);
+    ctx.fillStyle = oldStyle;
 }
 
 };

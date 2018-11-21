@@ -9,6 +9,7 @@ var gameManager = {
 	gameScreen : 1,
 	controlScreen : 2,
 	position : 0,
+	score : 0,
 	startUp : true,
 	startUpSound : new Audio("Sounds/startSound.wav"),
 
@@ -73,6 +74,7 @@ var gameManager = {
 	_renderGameScreen :function(ctx){
 		Background1.render(ctx);
 		entityManager.render(ctx);
+		this._renderScore();
 	},
 
 	_updateGameScreen: function(du){
@@ -100,6 +102,9 @@ var gameManager = {
 
 	_updateControlScreen: function(du){
 
+	},
+	_renderScore: function(){
+		util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 30);
 	},
 	reset: function(du){
 		entityManager.init();

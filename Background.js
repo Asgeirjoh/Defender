@@ -18,7 +18,11 @@ Background.prototype.update = function(du) {
 };
 
 Background.prototype.render = function(ctx) {
-    g_sprites.background.drawAt(ctx, this.cx + offset, 0);
+    g_sprites.background2.drawAt(ctx, offset/3, 0);
+    g_sprites.background1.drawAt(ctx, this.cx + offset, 0);
+    /*ctx.translate(offset, 0);
+    g_sprites.background.drawAt(ctx, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);*/
 };
 
 Background.prototype.wrapPosition = function(du) {

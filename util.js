@@ -106,6 +106,14 @@ fillBox: function (ctx, x, y, w, h, style) {
     ctx.fillStyle = oldStyle;
 },
 
+drawBorder: function (ctx, x, y, w, h, size, style) {
+  ctx.beginPath();
+  ctx.strokeStyle = style;
+  ctx.rect(x, y, w, h);
+  ctx.lineWidth=size;
+  ctx.stroke();
+},
+
 drawLetters: function (ctx, text, allign, x, y) {
     var oldStyle = ctx.fillStyle;
     ctx.fillStyle = "#FFD11A";

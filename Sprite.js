@@ -35,6 +35,12 @@ Sprite.prototype.getSpriteHeight = function(){
 	return this._SPRITE_HEIGHT;
 };
 
+Sprite.prototype.drawMinimap = function (ctx, x, y, sx, sy) {
+	this.x = x;
+	this.y = y;
+	ctx.drawImage(this.image, x, y, sx, sy);
+};
+
 Sprite.prototype.drawAt = function (ctx, x, y) {
     this.x = x;
     this.y = y;

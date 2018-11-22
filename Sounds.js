@@ -13,3 +13,4 @@ var friendAbductedSound = new Audio("Sounds/civilAbducted.wav");
 var friendFallingSound = new Audio("Sounds/civilFalling.wav");
 var friendPickUpSound = new Audio("Sounds/civilPickUp.wav");
 var friendSavedSound = new Audio("Sounds/civilSaved.wav");
+var gameOverSound = new Audio("Sounds/gameOver.wav");

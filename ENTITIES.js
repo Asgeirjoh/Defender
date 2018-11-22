@@ -71,14 +71,17 @@ function processDiagnostics() {
 
     if (eatKey(KEY_RESET)) entityManager.resetShips();
 
-    if (eatKey(KEY_0)) entityManager.toggleRocks();
-
-    if (eatKey(KEY_1)) entityManager.generateShip({
-	cx : g_mouseX,
-	cy : g_mouseY});
-
-    if (eatKey(KEY_K)) entityManager.killNearestShip(
+    if (eatKey(KEY_K)){ entityManager.killNearestShip(
         g_mouseX, g_mouseY);
+
+        /* Þarf að laga þetta, 
+        er bara prófa gamelost screen
+        útaf við erum ekki komnir með 
+        enimies til að missa nein líf.
+        */
+        gameManager.position = gameManager.gamelost 
+    }
+
 }
 
 // =================
@@ -99,26 +102,29 @@ var g_images = {};
 
 function requestPreloads() {
 
-  var requiredImages = {
-  ship  	   		: "Pictures/playerSheet.png",
-  bullet     		: "Pictures/shot.png",
-  background1 		: "Pictures/Background1.png",
-  background2 		: "Pictures/Background2.png",
-      enemy	   		: "Pictures/enemySheet.png",
-      defender   		: "Pictures/defender.png",
-      play	   		: "Pictures/play.png",
-      menu			: "Pictures/menu.png",
-      control			: "Pictures/control.png",
-      controls_active	: "Pictures/controls_active.png",
-      black 			: "Pictures/black.png",
-      play1 			: "Pictures/play1.png",
-      back 			: "Pictures/back.png",
-      back_active 	: "Pictures/back_active.png",
-      man             : "Pictures/man.png",
-      mans            : "Pictures/mans.png",
-      bombs           : "Pictures/bomb.png",
-  };
-
+    var requiredImages = {
+		ship  	   		: "Pictures/playerSheet.png",
+		bullet     		: "Pictures/shot.png",
+		background 		: "Pictures/Background.png",
+        enemy	   		: "Pictures/enemySheet.png",
+        defender   		: "Pictures/defender.png",
+        play	   		: "Pictures/play.png",
+        menu			: "Pictures/menu.png",
+        control			: "Pictures/control.png",
+        controls_active	: "Pictures/controls_active.png",
+        black 			: "Pictures/black.png",
+        play1 			: "Pictures/play1.png",
+        back 			: "Pictures/back.png",
+        back_active 	: "Pictures/back_active.png",
+        man             : "Pictures/man.png",
+        mans            : "Pictures/mans.png",
+        bombs           : "Pictures/bomb.png",
+        gameOver        : "Pictures/gameOver.png",
+        playAgain       : "Pictures/playAgain.png",
+        playAgain1      : "Pictures/playAgain1.png",
+        background1 	: "Pictures/Background1.png",
+        background2 	: "Pictures/Background2.png",
+    };
 
     imagesPreload(requiredImages, g_images, preloadDone);
 }
@@ -128,8 +134,7 @@ var g_sprites = {};
 function preloadDone() {
 
     g_sprites.ship = new Sprite(g_images.ship);
-    g_sprites.background1 = new Sprite(g_images.background1);
-    g_sprites.background2 = new Sprite(g_images.background2);
+    g_sprites.background = new Sprite(g_images.background);
     g_sprites.bullet = new Sprite(g_images.bullet);
     g_sprites.enemy = new Sprite(g_images.enemy);
     g_sprites.play1 = new Sprite(g_images.play1);
@@ -145,6 +150,11 @@ function preloadDone() {
     g_sprites.man = new Sprite(g_images.man);
     g_sprites.mans = new Sprite(g_images.mans);
     g_sprites.bombs = new Sprite(g_images.bombs);
+    g_sprites.gameOver = new Sprite(g_images.gameOver);
+    g_sprites.playAgain = new Sprite(g_images.playAgain);
+    g_sprites.playAgain1 = new Sprite(g_images.playAgain1);
+    g_sprites.background1 = new Sprite(g_images.background1);
+    g_sprites.background2 = new Sprite(g_images.background2);
     main.init();
 
 }

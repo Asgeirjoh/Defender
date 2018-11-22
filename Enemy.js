@@ -27,6 +27,8 @@ Enemy.prototype.smartBombs = 3;
 Enemy.prototype.KEY_BOMB = 'B'.charCodeAt(0);
 
 Enemy.prototype.update = function(du){
+  if(this._isDeadNow)
+		return entityManager.KILL_ME_NOW
 }
 
 Enemy.prototype.render = function(ctx){

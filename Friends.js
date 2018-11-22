@@ -33,6 +33,9 @@ Friends.prototype.randomisePosition = function () {
 
 Friends.prototype.update = function(du) {
 
+	if(this._isDeadNow)
+		return entityManager.KILL_ME_NOW
+
     if(this.frameIndex === 0 || this.frameIndex === 1){
 		this.cx -= 0.2;
 		this.rightStepCount = this.stepLength;

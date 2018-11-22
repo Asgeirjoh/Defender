@@ -74,12 +74,12 @@ function processDiagnostics() {
     if (eatKey(KEY_K)){ entityManager.killNearestShip(
         g_mouseX, g_mouseY);
 
-        /* Þarf að laga þetta, 
+        /* Þarf að laga þetta,
         er bara prófa gamelost screen
-        útaf við erum ekki komnir með 
+        útaf við erum ekki komnir með
         enimies til að missa nein líf.
         */
-        gameManager.position = gameManager.gamelost 
+        gameManager.position = gameManager.gamelost
     }
 
 }
@@ -124,6 +124,7 @@ function requestPreloads() {
         playAgain1      : "Pictures/playAgain1.png",
         background1 	: "Pictures/Background1.png",
         background2 	: "Pictures/Background2.png",
+        backgroundMinimap 	: "Pictures/BackgroundMinimap.png",
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -155,6 +156,7 @@ function preloadDone() {
     g_sprites.playAgain1 = new Sprite(g_images.playAgain1);
     g_sprites.background1 = new Sprite(g_images.background1);
     g_sprites.background2 = new Sprite(g_images.background2);
+    g_sprites.backgroundMinimap = new Sprite(g_images.backgroundMinimap);
     main.init();
 
 }

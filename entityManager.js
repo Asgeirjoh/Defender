@@ -43,7 +43,7 @@ _generateFriends : function() {
 // "PRIVATE" METHODS
 
 _findNearestShip : function(posX, posY) {
-   
+
     var minLength = util.square(g_canvas.width) + util.square(g_canvas.height),
         newLength,
         closestShip,
@@ -53,7 +53,7 @@ _findNearestShip : function(posX, posY) {
         newLength = util.wrappedDistSq(posX, posY,
                                this._ships[i].cx, this._ships[i].cy,
                                g_canvas.width, g_canvas.height);
-     
+
         if (newLength < minLength) {
 
               minLength = newLength;
@@ -92,36 +92,36 @@ deferredSetup : function () {
 init: function(){
     this._generateFriends();
 	   this.generateShip({
-		   cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
-           cy: (g_canvas.height / 2) - (g_sprites.ship.getSpriteHeight() / 2)})
-           
+		   cx: (g_canvas.width / 2),
+           cy: (g_canvas.height / 2)})
+
 },
 
-fireBullet: function(cx, cy, velX, velY) {	
+fireBullet: function(cx, cy, velX, velY) {
     this._bullets.push(new Bullet( {cx: cx,
                                     cy: cy,
                                     velX: velX,
-                                    velY: velY 
+                                    velY: velY
 									}));
 },
 
-generateEnemy : function(cx, cy, velX, velY, frame){	
+generateEnemy : function(cx, cy, velX, velY, frame){
 	this._enemies.push(new Enemy({cx: cx, cy: cy,
 								  velX: velX, velY: velY,
 								  frame: frame}));
 },
 
-generateFriends : function(descr) {   
+generateFriends : function(descr) {
     this._friends.push(new Friends(descr));
 },
 
-generateShip : function(descr) {   
+generateShip : function(descr) {
     this._ships.push(new Ship({cx: descr.cx, cy: descr.cy}));
 },
 
 killNearestShip : function(xPos, yPos) {
     var nearestShip = this._findNearestShip(xPos, yPos);
-    this._ships.splice(nearestShip.theIndex, 1); 
+    this._ships.splice(nearestShip.theIndex, 1);
 },
 
 resetShips: function() {
@@ -137,7 +137,7 @@ _renderScore: function(){
 },
 
 update: function(du) {
-	
+
     for (var c = 0; c < this._categories.length; ++c) {
       var aCategories = this._categories[c];
       for (var i = 0; i < aCategories.length; ++i) {
@@ -146,7 +146,7 @@ update: function(du) {
             aCategories.splice(i, 1);
         };
       }
-    } 
+    }
 },
 resetGame: function() {
 
@@ -172,7 +172,7 @@ render: function(ctx) {
 	if(this._enemies.length < 3){
 		for(let g = 0; g < 3; g++){
 			this.generateEnemy(100 * i, 10, 0,  0, g);
-			
+
 		}
 	}
 

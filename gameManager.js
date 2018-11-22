@@ -1,5 +1,4 @@
 "use strict";
-var g_toggleAudio = true;
 
 var KEY_AUDIO = keyCode('M');
 var KEY_K = keyCode('K');

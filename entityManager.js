@@ -55,8 +55,12 @@ deferredSetup : function () {
 
 init: function(){
 	for(let i = 0; i < g_sprites.enemy.getImageFrames(); i++){
-		this.generateEnemy("Enemy", 100,40 + (100 * i), 0, 0, i);	}	
-
+		let y = -300 + Math.floor((Math.random() * 100));	
+		let x = -300 + Math.floor((Math.random() * 1500));	
+	
+		this.generateEnemy("Enemy", x, y, 1, 1, i);	
+	}
+	
 	this.generateShip({
 		name: "Ship",
 		cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
@@ -110,8 +114,39 @@ haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
 },
 
-update: function(du) {	
-    for (var c = 0; c < this._categories.length; ++c) {
+enemyCountUpdate : function(du){
+	if(this._enemies.length === 0){
+		for(let i = 0; i < g_sprites.enemy.getImageFrames(); i++){
+			let y = -300 + Math.floor((Math.random() * 100));	
+			let x = -300 + Math.floor((Math.random() * 1500));				
+			
+			this.generateEnemy("Enemy", x, y, 1, 1, i);	
+		}
+	}
+	
+	for(let i = 0; i < this._enemies.length; i++){
+		let px = this._ships[0].getPos().posX;
+		let py = this._ships[0].getPos().posY;
+		let ex = this._enemies[i].getPos().posX;
+		let ey = this._enemies[i].getPos().posY;
+	
+		if(ex < 0){
+			this._enemies[i].velX = 2;			
+		}else if(ex > 1000){
+			this._enemies[i].velX = -1;
+		}
+		
+		if(ey < 150){
+			this._enemies[i].velY = 2;	
+		}else if(ey > 400){
+			this._enemies[i].velY = -1;			
+		}
+
+	}
+},
+
+categoryUpdate : function(du){
+	for (var c = 0; c < this._categories.length; ++c) {
       var aCategories = this._categories[c];
       for (var i = 0; i < aCategories.length; ++i) {        
         if (aCategories[i].update(du) === this.KILL_ME_NOW) {
@@ -119,6 +154,11 @@ update: function(du) {
         }
       }
     } 
+},
+
+update: function(du) {	
+	this.categoryUpdate(du);
+	this.enemyCountUpdate(du);	 
 },
 
 render: function(ctx) {

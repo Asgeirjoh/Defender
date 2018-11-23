@@ -45,6 +45,10 @@ Bullet.prototype.takeBulletHit = function(){
 Bullet.prototype.update = function (du) {
 
 	this.lifeSpan -= du;
+  if (this.lifespan < 0) {
+    this.kill();
+  	spatialManager.unregister(this);
+  }
 	this.cx += this.velX * du;
 
 	// If there is no entity in the container
@@ -86,7 +90,7 @@ Bullet.prototype.render = function (ctx) {
 
 		ctx.globalAlpha = this.lifeSpan/fadeThresh;
 			g_sprites.bullet.drawCentredAt(ctx,
-					this.cx, this.cy, 0, this.scale);
+					this.cx + offset, this.cy, 0, this.scale);
 
 
     ctx.globalAlpha = 1;

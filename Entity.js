@@ -52,7 +52,7 @@ Entity.prototype.setPos = function (cx, cy) {
 };
 
 Entity.prototype.getPos = function () {
-    return {posX : this.cx, posY : this.cy};
+    return {posX : this.cx + offset, posY : this.cy};
 };
 
 Entity.prototype.getRadius = function () {
@@ -71,15 +71,21 @@ Entity.prototype.isDead = function () {
     return this._isDeadNow;
 };
 
+// Finding a target
 Entity.prototype.findTarget = function (target) {
     var pos = this.getPos();
 
 	let hitEntity = spatialManager.findEntityInRange(
         target, pos.posX, pos.posY, this.getRadius());
 
-	if(hitEntity){		
+	if(hitEntity){
 		return hitEntity
 	}
+};
+
+// Bombs all targes.
+Entity.prototype.bombTarget = function () {
+	spatialManager.findEnemyToBomb();
 };
 
 // This is just little "convenience wrapper"

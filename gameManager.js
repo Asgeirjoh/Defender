@@ -134,6 +134,11 @@ var gameManager = {
 	_updateControlScreen: function(du){
 
 	},
+
+	newLevel: function(du) {
+
+	},
+
 	reset: function(du){
 		this.gameOver = false;
 		entityManager.init();

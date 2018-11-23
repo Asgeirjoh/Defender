@@ -24,12 +24,12 @@ function Enemy(descr) {
 }
 
 Enemy.prototype = new Entity();
-Enemy.prototype.smartBombs = 3;
-Enemy.prototype.KEY_BOMB = 'B'.charCodeAt(0);
+
+// Kannar hvort sprengja hafi verið notuð.
+Enemy.prototype.isBombed = false;
 
 Enemy.prototype.takeBulletHit = function(){
 	this.kill();
-	spatialManager.unregister(this);
 };
 
 Enemy.prototype.update = function(du) {
@@ -37,7 +37,9 @@ Enemy.prototype.update = function(du) {
 	this.cx += this.velX * du;
 	this.cy += this.velY * du;
 
-	if(this.isDead()){
+
+	if(this.isDead() || this.isBombed){
+		spatialManager.unregister(this);
 		return entityManager.KILL_ME_NOW;
 	}
   this.wrapPosition();

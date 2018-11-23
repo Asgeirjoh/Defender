@@ -200,10 +200,10 @@ Ship.prototype.maybeFireBullet = function () {
 		let w = g_sprites.ship.getSpriteWidth();
 
 		if(this.frame === 0){
-			launchDist = this.cx + (w * 2 * right);
+			launchDist = (this.cx + -offset) + (w * 2 * right)-30;
 			orientation = launchVel * right;
 		}else{
-			launchDist = this.cx + (w * 2 * left);
+			launchDist = (this.cx + -offset) + (w * 2 * left)+30;
 			orientation = launchVel * left;
 		}
 

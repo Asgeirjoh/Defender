@@ -49,20 +49,24 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._bombs, this._bullets, this._ships, this._enemies, this._friends];
+    this._categories = [this._bombs, this._bullets,
+								this._ships, this._enemies, this._friends];
 },
 
 init: function(){
-	for(let i = 0; i < g_sprites.enemy.getImageFrames(); i++){
-		this.generateEnemy("Enemy", 600,40 + (100 * i), 0, 0, i);	}
+	for(let i = 0; i < 10; i++){
+		this.generateEnemy("Enemy", 500 + Math.random()
+                    * mapSize, (100 + g_sprites.enemy.getSpriteHeight() / 2) + Math.random()
+                                    * 300, 0, 0, 5);	}
 
 	this.generateShip({
 		name: "Ship",
 		cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
         cy: (g_canvas.height / 2)- (g_sprites.ship.getSpriteHeight() / 2)});
 
+	// Generateing the bombs.
 	for(let i = 0; i < 3; i++){
-		this.generateBomb("Enemy", 15 + (35 * i), 30);
+		this.generateBomb("Enemy", 15 + (35 * i), 30, i + 1);
 	}
 
 	this.generateFriends();
@@ -77,8 +81,9 @@ fireBullet: function(target, cx, cy, velX, velY) {
 									}));
 },
 
-generateBomb : function(target, cx, cy){
-	this._bombs.push(new Bomb({target: target, cx: cx, cy: cy}));
+generateBomb : function(target, cx, cy, amount){
+	this._bombs.push(new Bomb({target: target, cx: cx,
+												cy: cy, bombCount: amount}));
 },
 
 generateEnemy : function(name, cx, cy, velX, velY, frame){
@@ -90,7 +95,8 @@ generateEnemy : function(name, cx, cy, velX, velY, frame){
 generateFriends : function(descr) {
     var NUM = 1;
     for (var i = 0; i < NUM; ++i) {
-        this._friends.push(new Friends({cx: 500 + Math.random() * mapSize,cy:this.cy}));
+        this._friends.push(new Friends({cx: 500 + Math.random()
+												* g_canvas.width,cy:this.cy}));
     }
 },
 

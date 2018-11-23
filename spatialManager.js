@@ -26,23 +26,32 @@ _entities : new Map(),
 // "PRIVATE" METHODS
 //
 
-_findNearestEntity : function(posX, posY) {   
+_findNearestEntity : function(posX, posY) {
     var minLength = util.square(posX) + util.square(posY),
         newLength, closestEntity = null;
 
-	this._entities.forEach(function(value, key) {			
-			let ent = value;
-			
-			newLength = util.distSq(posX, posY,
-							ent.cx, ent.cy);
-	 
-			if (newLength > 0 && newLength < minLength) {				
-				minLength = newLength;
-				closestEntity = ent;						
-			}		
-	});		
-		
-	return closestEntity;		
+	this._entities.forEach(function(value, key) {
+		let ent = value;
+
+		newLength = util.distSq(posX, posY,
+						ent.cx, ent.cy);
+
+		if (newLength > 0 && newLength < minLength) {
+			minLength = newLength;
+			closestEntity = ent;
+		}
+	});
+
+	return closestEntity;
+},
+
+// Finds the enemies to bomb.
+_bombEnemy : function(){
+	this._entities.forEach(function(value, key) {
+		if(value.name === "Enemy"){
+			value.isBombed = true;
+		}
+	});
 },
 
 // PUBLIC METHODS
@@ -53,43 +62,44 @@ getNewSpatialID : function() {
 
 // Registering an entity.
 register: function(entity) {
-	let id = entity.getSpatialID();	
-	this._entities.set(id, entity);		
+	let id = entity.getSpatialID();
+	this._entities.set(id, entity);
 },
 
 // Unregistering an entity.
-unregister: function(entity) {	
-	let id = entity.getSpatialID();	
-	this._entities.delete(id);	
+unregister: function(entity) {
+	let id = entity.getSpatialID();
+	this._entities.delete(id);
 },
 
-findEntityInRange: function(target, posX, posY, radius) {	
-	let x = (radius * Math.sin(radius));
-	let y = -(radius * Math.cos(radius));	
-	let nearest = this._findNearestEntity(posX, posY);	
-	
+findEntityInRange: function(target, posX, posY, radius) {
+	let nearest = this._findNearestEntity(posX, posY);
+
 	if(nearest != null){
 		if(nearest.name === target){
 			return nearest;
 		}
-	}	
+	}
+},
+
+findEnemyToBomb: function(){
+	this._bombEnemy();
 },
 
 // Unused, but is here if needed.
 update: function(du){
 },
 
-render: function(ctx) {	
-   
+render: function(ctx) {
 	var oldStyle = ctx.strokeStyle;
 	ctx.strokeStyle = "red";
-		
-	this._entities.forEach(function(value, key) {	
+
+	this._entities.forEach(function(value, key) {
 		let e = value;
-		util.strokeCircle(ctx, e.getPos().posX, e.getPos().posY, e.getRadius());		
-	});	
-    
-	ctx.strokeStyle = oldStyle;		
+		util.strokeCircle(ctx, e.getPos().posX, e.getPos().posY, e.getRadius());
+	});
+
+	ctx.strokeStyle = oldStyle;
 }
 
 }

@@ -24,6 +24,7 @@ with suitable 'data' and 'methods'.
 var entityManager = {
 
 // "PRIVATE" DATA
+_bombs		 : [],
 _bullets 	 : [],
 _ships   	 : [],
 _enemies 	 : [],
@@ -48,18 +49,21 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._bullets, this._ships, this._enemies, this._friends];
+    this._categories = [this._bombs, this._bullets, this._ships, this._enemies, this._friends];
 },
 
 init: function(){
 	for(let i = 0; i < g_sprites.enemy.getImageFrames(); i++){
-		this.generateEnemy("Enemy", 100,40 + (100 * i), 0, 0, i);
-	}	
+		this.generateEnemy("Enemy", 100,40 + (100 * i), 0, 0, i);	}	
 
 	this.generateShip({
 		name: "Ship",
 		cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
         cy: (g_canvas.height / 2)- (g_sprites.ship.getSpriteHeight() / 2)});
+		
+	for(let i = 0; i < 3; i++){
+		this.generateBomb("Enemy", 15 + (35 * i), 30);
+	}
            
 	this.generateFriends();  
 },
@@ -71,6 +75,10 @@ fireBullet: function(target, cx, cy, velX, velY) {
                                     velX: velX,
                                     velY: velY 
 									}));
+},
+
+generateBomb : function(target, cx, cy){	
+	this._bombs.push(new Bomb({target: target, cx: cx, cy: cy}));	
 },
 
 generateEnemy : function(name, cx, cy, velX, velY, frame){	

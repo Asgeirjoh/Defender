@@ -43,9 +43,9 @@ Bomb.prototype.useBomb = function(){
 	let canTakeHit = this.closeEntity.takeBulletHit;	
 	
 	if (canTakeHit){			
-		canTakeHit.call(this.closeEntity);	
-		spatialManager.unregister(this);
-		return entityManager.KILL_ME_NOW;
+		//canTakeHit.call(this.closeEntity);	
+		//spatialManager.unregister(this);
+		//return entityManager.KILL_ME_NOW;
 	}
 };
 
@@ -54,7 +54,7 @@ Bomb.prototype.update = function(du){
 
 if(keys[this.KEY_BOMB]){
 		this.isBombing = true;
-		console.log("FDFD");
+		
 	}	
 };
 

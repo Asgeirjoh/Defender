@@ -48,16 +48,6 @@ Enemy.prototype.getRadius = function(){
 
 
 Enemy.prototype.render = function (ctx) {
-	this.renderBombs(ctx);
-	
     g_sprites.enemy.drawCentredAt(ctx, this.cx, this.cy,
 									this.frame,	this.scale);
-};
-
-Enemy.prototype.renderBombs = function (ctx) {
-  var x = 15;
-  for (var i = 1; i <= this.smartBombs; i++) {
-    g_sprites.bombs.drawCentredAt(ctx, x, 30, 0, 1);
-    x+=35;
-  }
 };

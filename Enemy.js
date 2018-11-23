@@ -29,13 +29,12 @@ Enemy.prototype = new Entity();
 Enemy.prototype.isBombed = false;
 
 Enemy.prototype.takeBulletHit = function(){
-  util.playAudio(enemyDeath);
-
+  	util.playAudio(enemyDeath);
 	this.kill();
 };
 
 Enemy.prototype.update = function(du) {
-
+	spatialManager.unregister(this);
 	if(this._isDeadNow) {
 		return entityManager.KILL_ME_NOW;
 	  }
@@ -52,6 +51,7 @@ Enemy.prototype.update = function(du) {
 		this.insert();
 	}
   this.wrapPosition();
+  spatialManager.register(this);
 };
 
 Enemy.prototype.getRadius = function(){

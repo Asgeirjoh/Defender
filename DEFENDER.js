@@ -52,6 +52,7 @@ function updateSimulation(du) {
 var g_allowMixedActions = true;
 var g_useGravity = false;
 var g_useAveVel = true;
+var g_renderSpatialDebug = false;
 
 var KEY_MIXED   = keyCode('M');;
 var KEY_GRAVITY = keyCode('G');
@@ -79,7 +80,7 @@ function processDiagnostics() {
 
     if (eatKey(KEY_RESET)) entityManager.resetShips();
 
-    if (eatKey(KEY_0)) entityManager.toggleRocks();
+    if (eatKey(KEY_0)) g_renderSpatialDebug = !g_renderSpatialDebug;
 
     if (eatKey(KEY_1)) entityManager.generateShip({
 	cx : g_mouseX,

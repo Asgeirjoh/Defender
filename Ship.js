@@ -52,6 +52,7 @@ Ship.prototype.warpingScale = -1;
 
 
 Ship.prototype.update = function(du) {
+    spatialManager.unregister(this);
     if(this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
       }
@@ -72,7 +73,8 @@ Ship.prototype.update = function(du) {
 	this.maybeFireBullet();
 
 	// Turning the ship.
-	this.updateFrame();
+    this.updateFrame();
+    spatialManager.register(this);
 
 };
 
@@ -245,7 +247,7 @@ Ship.prototype.takeBulletHit = function(){
 };
 
 Ship.prototype.wrapPosition = function () {
-    this.cx = util.wrapRange(this.cx, 0, mapSize);
+    //this.cx = util.wrapRange(this.cx, 0, mapSize);
 };
 
 Ship.prototype.render = function (ctx){

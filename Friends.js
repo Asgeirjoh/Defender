@@ -16,16 +16,14 @@ function Friends(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-
-	this.setup();
+	this.setup(descr);
+	spatialManager.register(this);
 
     this.updateFrames();
     this.stepLength = 10;
 	this.leftStepCount = this.stepLength;
 	this.rightStepCount = this.stepLength;
-    this.randomisePosition();
-
-	spatialManager.register(this);
+	this.randomisePosition();
 };
 
 Friends.prototype = new Entity();
@@ -33,7 +31,7 @@ Friends.prototype.scale = 1;
 Friends.prototype.isRegistered = false;
 
 Friends.prototype.getRadius = function(){
-	return (g_sprites.ship.getSpriteWidth() / 2) * 0.5;
+	return (g_sprites.mans.getSpriteWidth() / 2) * 0.7;
 };
 
 Friends.prototype.randomisePosition = function () {
@@ -43,10 +41,10 @@ Friends.prototype.randomisePosition = function () {
 
 Friends.prototype.takeBulletHit = function(){
 	this.kill();
-	spatialManager.unregister(this);
 };
 
 Friends.prototype.update = function(du) {
+spatialManager.unregister(this);
   if(this._isDeadNow) {
     return entityManager.KILL_ME_NOW;
   }
@@ -76,22 +74,9 @@ Friends.prototype.update = function(du) {
 			this.rightStepCount = 0;
 		}
 		else this.rightStepCount++;
-    }
-    this.wrapPosition();
-};
-
-Friends.prototype.setPos = function (cx, cy) {
-    this.cx = cx;
-    this.cy = cy;
-};
-
-Friends.prototype.getPos = function () {
-    return {posX : this.cx, posY : this.cy};
-};
-
-Friends.prototype.reset = function () {
-    this.setPos(this.reset_cx, this.reset_cy);
-	this.frame = 1;
+	}
+	this.wrapPosition();
+	spatialManager.register(this);
 };
 
 Friends.prototype.updateFrames = function(){

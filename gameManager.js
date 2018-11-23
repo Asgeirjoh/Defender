@@ -111,6 +111,7 @@ var gameManager = {
 	_renderGameScreen :function(ctx){
 		Background1.render(ctx);
 		entityManager.render(ctx);
+		if (g_renderSpatialDebug) spatialManager.render(ctx);
 		this._renderScore(ctx);
 		this._renderLevel(ctx);
 	},

@@ -1,17 +1,15 @@
 "use strict";
+var g_toggleAudio = true;
 
 var KEY_AUDIO = keyCode('M');
-var KEY_K = keyCode('K');
 
 var gameManager = {
 
 	startScreen : 0,
 	gameScreen : 1,
 	controlScreen : 2,
-	gamelost : 3,
-	score : 0,
 	position : 0,
-	gameOver : false,
+	score : 0,
 	startUp : true,
 	startUpSound : new Audio("Sounds/startSound.wav"),
 
@@ -25,9 +23,6 @@ var gameManager = {
 		else if(this.position === this.controlScreen){
 			this._renderControlScreen(ctx);
 		}
-		else if(this.position === this.gamelost){
-			this._renderGameWonScreen(ctx);
-		}
 	},
 
 	updateScreen: function(du){
@@ -40,13 +35,6 @@ var gameManager = {
 		else if (this.position === this.controlScreen){
 			this._updateControlScreen(du);
 		}
-		else if(this.position === this.gamelost){
-			this._updateGameWonScreen(ctx);
-		}
-	},
-
-	toggleAudio: function () {
-		if (eatKey(KEY_AUDIO)) g_toggleAudio = !g_toggleAudio;
 	},
 
 	_renderStartScreen :function(ctx){
@@ -61,14 +49,17 @@ var gameManager = {
 		if(this._isMouseOver(g_sprites.play)){
 			g_sprites.play.image = g_images.play1;
 			if(g_mouseButton) {
-				this.position = this.gameScreen;
-				entityManager.init();
+				this.position = this.gameScreen;			
 			}
 		}
 		else if(this._isMouseOver(g_sprites.control)){
 			g_sprites.control.image = g_images.controls_active;
 			if(g_mouseButton) this.position = this.controlScreen;
 		}
+	},
+	
+	toggleAudio: function () {
+		if (eatKey(KEY_AUDIO)) g_toggleAudio = !g_toggleAudio;
 	},
 
 	_isMouseOver: function(sprite){
@@ -79,34 +70,9 @@ var gameManager = {
 		return false;
 	},
 
-	_renderScore: function(){
-		util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 30);
-	},
-
-
-	_renderGameWonScreen: function(du){
-		g_sprites.gameOver.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2,0);
-		util.drawLetters(ctx,"Your Score is: "+ this.score,"end",g_canvas.width/2+100, 30)
-		g_sprites.playAgain.drawCentred(ctx,g_canvas.width/2,400,0);
-		g_sprites.playAgain.image = g_images.playAgain;
-		if(this._isMouseOver(g_sprites.playAgain)){
-			g_sprites.playAgain.image = g_images.playAgain1;
-			if(g_mouseButton){
-				this.reset();
-				this.score = 0;
-				this.position = this.startScreen;
-			}
-		}
-	},
-
-	_updateGameWonScreen: function(du){
-
-	},
-
 	_renderGameScreen :function(ctx){
 		Background1.render(ctx);
 		entityManager.render(ctx);
-		this._renderScore();
 	},
 
 	_updateGameScreen: function(du){
@@ -118,14 +84,10 @@ var gameManager = {
 	    processDiagnostics();
 		entityManager.update(du);
 		eatKey(Ship.prototype.KEY_FIRE);
-	    if(this.gameOver){
-	    	console.log("gamelost");
-			this.position = this.gamelost;
-	    }
 	},
 
 
-	_renderControlScreen :function(ctx){
+	_renderControlScreen: function(ctx){
 		g_sprites.menu.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2);
 		g_sprites.back.drawCentred(ctx,g_canvas.width/2,470);
 
@@ -140,8 +102,6 @@ var gameManager = {
 
 	},
 	reset: function(du){
-		this.gameOver = false;
 		entityManager.init();
-		entityManager.resetGame();
 	},
 }

@@ -21,26 +21,29 @@ var spatialManager = {
 // "PRIVATE" DATA
 
 _nextSpatialID : 1, // make all valid IDs non-falsey (i.e. don't start at 0)
-
-_entities : [],
+_entities : new Map(),
 
 // "PRIVATE" METHODS
 //
-_registeredEntities : function(entity, id){	
-	let indx = id - 1;
-	let ent = entity;
-	
-	if(ent != null){
-		this._entities.push(ent);		
-		return;
-	}
-	
-	return{
-		thisEntity : this._entities[indx],
-		thisIndex : indx
-	};
-},
 
+_findNearestEntity : function(posX, posY) {   
+    var minLength = util.square(posX) + util.square(posY),
+        newLength, closestEntity = null;
+
+	this._entities.forEach(function(value, key) {			
+			let ent = value;
+			
+			newLength = util.distSq(posX, posY,
+							ent.cx, ent.cy);
+	 
+			if (newLength > 0 && newLength < minLength) {				
+				minLength = newLength;
+				closestEntity = ent;						
+			}		
+	});		
+		
+	return closestEntity;		
+},
 
 // PUBLIC METHODS
 //
@@ -48,39 +51,45 @@ getNewSpatialID : function() {
    return this._nextSpatialID++;
 },
 
+// Registering an entity.
 register: function(entity) {
-    var pos = entity.getPos();	
-    var spatialID = entity.getSpatialID(); 	
-	
-	this._registeredEntities(entity, spatialID);
+	let id = entity.getSpatialID();	
+	this._entities.set(id, entity);		
 },
 
-unregister: function(entity) {
-    var spatialID = entity.getSpatialID();
-	delete this._entities[spatialID];
+// Unregistering an entity.
+unregister: function(entity) {	
+	let id = entity.getSpatialID();	
+	this._entities.delete(id);	
 },
 
-findEntityInRange: function(posX, posY, radius) {	
-
+findEntityInRange: function(target, posX, posY, radius) {	
+	let x = (radius * Math.sin(radius));
+	let y = -(radius * Math.cos(radius));	
+	let nearest = this._findNearestEntity(posX, posY);	
 	
-	
-},
-
-render: function(ctx) {
-	
-    if(g_renderSpatialDebug){		
-		var oldStyle = ctx.strokeStyle;
-		ctx.strokeStyle = "red";
-    
-		for(let id in this._entities){
-			let e = this._entities[id];
-			let ent = this._registeredEntities(null, e.getSpatialID()).thisEntity;
-			
-			util.strokeCircle(ctx, ent.getPos().posX, ent.getPos().posY, ent.getRadius());
+	if(nearest != null){
+		if(nearest.name === target){
+			return nearest;
 		}
-    
-		ctx.strokeStyle = oldStyle;
 	}	
+},
+
+// Unused, but is here if needed.
+update: function(du){
+},
+
+render: function(ctx) {	
+   
+	var oldStyle = ctx.strokeStyle;
+	ctx.strokeStyle = "red";
+		
+	this._entities.forEach(function(value, key) {	
+		let e = value;
+		util.strokeCircle(ctx, e.getPos().posX, e.getPos().posY, e.getRadius());		
+	});	
+    
+	ctx.strokeStyle = oldStyle;		
 }
 
 }

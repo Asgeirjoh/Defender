@@ -38,7 +38,7 @@ Entity.prototype.setup = function (descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-    
+  
     // Get my (unique) spatial ID
     this._spatialID = spatialManager.getNewSpatialID();
     
@@ -64,15 +64,22 @@ Entity.prototype.getSpatialID = function () {
 };
 
 Entity.prototype.kill = function () {
-    spatialManager.unregister(this);
     this._isDeadNow = true;
 };
 
-Entity.prototype.findHitEntity = function () {
+Entity.prototype.isDead = function () {
+    return this._isDeadNow;
+};
+
+Entity.prototype.findTarget = function (target) {
     var pos = this.getPos();
-    return spatialManager.findEntityInRange(
-        pos.posX, pos.posY, this.getRadius()
-    );
+	
+	let hitEntity = spatialManager.findEntityInRange(
+        target, pos.posX, pos.posY, this.getRadius());
+	
+	if(hitEntity){		
+		return hitEntity
+	}	
 };
 
 // This is just little "convenience wrapper"

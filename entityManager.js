@@ -24,50 +24,12 @@ with suitable 'data' and 'methods'.
 var entityManager = {
 
 // "PRIVATE" DATA
+_bullets 	 : [],
+_ships   	 : [],
+_enemies 	 : [],
+_friends 	 : [],
 
-_rocks   : [],
-_bullets : [],
-_ships   : [],
-_enemies : [],
-_friends : [],
-
-_bShowRocks : false,
-
-
-_generateFriends : function() {
-    var NUM = 20;
-    for (var i = 0; i < NUM; ++i) {
-        this.generateFriends({cx: 500 + Math.random()*mapSize,cy:this.cy});
-    }
-},
 // "PRIVATE" METHODS
-
-_findNearestShip : function(posX, posY) {
-
-    var minLength = util.square(g_canvas.width) + util.square(g_canvas.height),
-        newLength,
-        closestShip,
-        closestIndex;
-
-    for (var i = 0; i < this._ships.length; i++) {
-        newLength = util.wrappedDistSq(posX, posY,
-                               this._ships[i].cx, this._ships[i].cy,
-                               g_canvas.width, g_canvas.height);
-
-        if (newLength < minLength) {
-
-              minLength = newLength;
-              closestShip = this._ships[i];
-              closestIndex = i;
-
-        }
-    }
-
-    return {
-		theShip : closestShip,   // the object itself
-		theIndex: closestIndex   // the array index where it lives
-    };
-},
 
 _forEachOf: function(aCategory, fn) {
     for (var i = 0; i < aCategory.length; ++i) {
@@ -90,38 +52,42 @@ deferredSetup : function () {
 },
 
 init: function(){
-    this._generateFriends();
-	   this.generateShip({
-		   cx: (g_canvas.width / 2),
-           cy: (g_canvas.height / 2)})
+	for(let i = 0; i < g_sprites.enemy.getImageFrames(); i++){
+		this.generateEnemy("Enemy", 100,40 + (100 * i), 0, 0, i);
+	}	
 
+	this.generateShip({
+		name: "Ship",
+		cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
+        cy: (g_canvas.height / 2)- (g_sprites.ship.getSpriteHeight() / 2)});
+           
+	this.generateFriends();  
 },
 
-fireBullet: function(cx, cy, velX, velY) {
-    this._bullets.push(new Bullet( {cx: cx,
+fireBullet: function(target, cx, cy, velX, velY) {	
+    this._bullets.push(new Bullet({ target: target,
+									cx: cx,
                                     cy: cy,
                                     velX: velX,
-                                    velY: velY
+                                    velY: velY 
 									}));
 },
 
-generateEnemy : function(cx, cy, velX, velY, frame){
-	this._enemies.push(new Enemy({cx: cx, cy: cy,
+generateEnemy : function(name, cx, cy, velX, velY, frame){	
+	this._enemies.push(new Enemy({name: name, cx: cx, cy: cy,
 								  velX: velX, velY: velY,
 								  frame: frame}));
 },
 
-generateFriends : function(descr) {
-    this._friends.push(new Friends(descr));
+generateFriends : function(descr) {  
+    var NUM = 4;
+    for (var i = 0; i < NUM; ++i) {
+        this._friends.push(new Friends({cx: 500 + Math.random() * g_canvas.width,cy:this.cy}));
+    }
 },
 
-generateShip : function(descr) {
-    this._ships.push(new Ship({cx: descr.cx, cy: descr.cy}));
-},
-
-killNearestShip : function(xPos, yPos) {
-    var nearestShip = this._findNearestShip(xPos, yPos);
-    this._ships.splice(nearestShip.theIndex, 1);
+generateShip : function(descr) {   
+    this._ships.push(new Ship({name: descr.name, cx: descr.cx, cy: descr.cy}));
 },
 
 resetShips: function() {
@@ -132,61 +98,26 @@ haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
 },
 
-_renderScore: function(){
-    util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 30);
-},
-
-update: function(du) {
-
+update: function(du) {	
     for (var c = 0; c < this._categories.length; ++c) {
       var aCategories = this._categories[c];
-      for (var i = 0; i < aCategories.length; ++i) {
-        // Update entity with the if statement
+      for (var i = 0; i < aCategories.length; ++i) {        
         if (aCategories[i].update(du) === this.KILL_ME_NOW) {
             aCategories.splice(i, 1);
-        };
+        }
       }
-    }
-},
-resetGame: function() {
-
-    for(var i = 0; i < this._friends.length; i++)
-    {
-        this._friends[i].kill();
-    }
-    for(var i = 0; i < this._ships.length; i++)
-    {
-        this._ships[i].kill();
-    }
-    for(var i = 0; i < this._enemies.length; i++)
-    {
-        this._enemies[i].kill();
-    }
-    for(var i = 0; i < this._bullets.length; i++)
-    {
-        this._bullets[i].kill();
-    }
+    } 
 },
 
 render: function(ctx) {
-	if(this._enemies.length < 3){
-		for(let g = 0; g < 3; g++){
-			this.generateEnemy(100 * i, 10, 0,  0, g);
-
-		}
-	}
-
-    // TODO: Implement this
     for (var c = 0; c < this._categories.length; c++) {
         var aCategory = this._categories[c];
-        if (aCategory != this._rocks || this._bShowRocks) {
-            for (var i = 0; i < aCategory.length; i++) {
-                aCategory[i].render(ctx);
-            }
-        }
-      }
+   
+        for (var i = 0; i < aCategory.length; i++) {
+            aCategory[i].render(ctx);				
+        }        
     }
-
+}
 }
 
 // Some deferred setup which needs the object to have been created first

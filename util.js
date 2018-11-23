@@ -5,6 +5,7 @@
 
 "use strict";
 
+
 var util = {
 
 
@@ -62,7 +63,6 @@ playAudio: function(sound) {
   }
 },
 
-
 // DISTANCES
 // =========
 
@@ -93,6 +93,12 @@ clearCanvas: function (ctx) {
     ctx.fillStyle = prevfillStyle;
 },
 
+strokeCircle: function (ctx, x, y, r) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.stroke();
+},
+
 fillCircle: function (ctx, x, y, r) {
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -103,23 +109,6 @@ fillBox: function (ctx, x, y, w, h, style) {
     var oldStyle = ctx.fillStyle;
     ctx.fillStyle = style;
     ctx.fillRect(x, y, w, h);
-    ctx.fillStyle = oldStyle;
-},
-
-drawBorder: function (ctx, x, y, w, h, size, style) {
-  ctx.beginPath();
-  ctx.strokeStyle = style;
-  ctx.rect(x, y, w, h);
-  ctx.lineWidth=size;
-  ctx.stroke();
-},
-
-drawLetters: function (ctx, text, allign, x, y) {
-    var oldStyle = ctx.fillStyle;
-    ctx.fillStyle = "#FFD11A";
-    ctx.font = "30px Arial";
-    ctx.textAlign=allign;
-    ctx.fillText(text, x, y);
     ctx.fillStyle = oldStyle;
 }
 

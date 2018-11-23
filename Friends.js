@@ -16,15 +16,25 @@ function Friends(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
+	
+	this.setup();
+	
     this.updateFrames();
     this.stepLength = 10;
 	this.leftStepCount = this.stepLength;
 	this.rightStepCount = this.stepLength;
     this.randomisePosition();
-
+	
+	spatialManager.register(this);
 };
 
 Friends.prototype = new Entity();
+Friends.prototype.scale = 1;
+Friends.prototype.isRegistered = false;
+
+Friends.prototype.getRadius = function(){
+	return (g_sprites.ship.getSpriteWidth() / 2) * 0.5;
+};
 
 Friends.prototype.randomisePosition = function () {
     this.cx = this.cx || Math.random() * g_canvas.width;
@@ -32,9 +42,6 @@ Friends.prototype.randomisePosition = function () {
 };
 
 Friends.prototype.update = function(du) {
-
-	if(this._isDeadNow)
-		return entityManager.KILL_ME_NOW
 
     if(this.frameIndex === 0 || this.frameIndex === 1){
 		this.cx -= 0.2;
@@ -66,8 +73,6 @@ Friends.prototype.update = function(du) {
     this.wrapPosition();
 };
 
-
-
 Friends.prototype.setPos = function (cx, cy) {
     this.cx = cx;
     this.cy = cy;
@@ -89,10 +94,12 @@ Friends.prototype.updateFrames = function(){
 
 Friends.prototype.wrapPosition = function () {
     var halfwidth = g_canvas.width/2;
+	let mapSize = 1000;
     this.cx = util.wrapRange(this.cx, halfwidth, mapSize + halfwidth);
 };
 
 Friends.prototype.render = function (ctx) {
+	
     g_sprites.mans.drawWrappedCentred(
-        ctx,this.frameIndex, this.cx+offset, this.cy);
+        ctx,this.frameIndex, this.cx, this.cy);
 };

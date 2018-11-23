@@ -11,16 +11,15 @@
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-// Construct a "sprite" from the given `image`,
-//
-function Sprite(image) {
-	this._SPRITE_HEIGHT = 32;
+// Construct a "sprite" from the given `image`.
+function Sprite(image) {	
+	this._SPRITE_DIMENSION = 32;
     this.image = image;
-
+	this.mapSize = g_canvas.width;
     this.width = image.width;
     this.height = image.height;
-
-	this._imageFrames = this.height / this._SPRITE_HEIGHT;
+	
+	this._imageFrames = image.width / this._SPRITE_DIMENSION;
 }
 
 Sprite.prototype.getImageFrames = function(){
@@ -28,17 +27,11 @@ Sprite.prototype.getImageFrames = function(){
 };
 
 Sprite.prototype.getSpriteWidth = function(){
-	return this.width;
+	return (this.width / this._imageFrames);
 };
 
 Sprite.prototype.getSpriteHeight = function(){
-	return this._SPRITE_HEIGHT;
-};
-
-Sprite.prototype.drawMinimap = function (ctx, x, y, sx, sy) {
-	this.x = x;
-	this.y = y;
-	ctx.drawImage(this.image, x, y, sx, sy);
+	return this.height;
 };
 
 Sprite.prototype.drawAt = function (ctx, x, y) {
@@ -67,19 +60,20 @@ Sprite.prototype.drawCentred = function (ctx, cx, cy, rotation) {
     ctx.restore();
 };
 
-Sprite.prototype.drawCentredAt = function (ctx, cx, cy, frame, scale) {
 
-    var w = this.width,
-        h = this.height;
-
+Sprite.prototype.drawCentredAt = function (ctx, cx, cy, frame, scale){
+	let w = this.getSpriteWidth();
+	let h = this.getSpriteHeight();
+	let f = frame * w;	
+	
     ctx.save();
     ctx.translate(cx, cy);
     ctx.scale(scale, scale);
 
-    ctx.drawImage(this.image, 0, this._SPRITE_HEIGHT * frame, w, this._SPRITE_HEIGHT, -w/2, -h/2, w * 1.2, h * 0.7);
-
+	ctx.drawImage(this.image, f, 0, w, h, (-w / 2), (-h / 2), w, h);
     ctx.restore();
 };
+
 
 Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, frame, scale) {
 
@@ -90,8 +84,8 @@ Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, frame, scale) {
     this.drawWrappedVerticalCentredAt(ctx, cx, cy, frame, scale);
 
     // Left and Right wraps
-    this.drawWrappedVerticalCentredAt(ctx, cx - mapSize, cy, frame, scale);
-    this.drawWrappedVerticalCentredAt(ctx, cx + mapSize, cy, frame, scale);
+    this.drawWrappedVerticalCentredAt(ctx, cx - this.mapSize, cy, frame, scale);
+    this.drawWrappedVerticalCentredAt(ctx, cx + this.mapSize, cy, frame, scale);
 };
 
 Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, frame, scale) {
@@ -111,8 +105,8 @@ Sprite.prototype.drawWrappedCentred = function (ctx, frame, cx, cy) {
     this.drawWrappedVerticalCentred(ctx, cx, cy, frame);
 
     // Left and Right wraps
-    this.drawWrappedVerticalCentred(ctx, cx - mapSize, cy, frame);
-    this.drawWrappedVerticalCentred(ctx, cx + mapSize, cy, frame);
+    this.drawWrappedVerticalCentred(ctx, cx - this.mapSize, cy, frame);
+    this.drawWrappedVerticalCentred(ctx, cx + this.mapSize, cy, frame);
 };
 
 Sprite.prototype.drawWrappedVerticalCentred = function (ctx, cx, cy, frame) {

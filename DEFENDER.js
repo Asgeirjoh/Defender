@@ -40,10 +40,10 @@ function gatherInputs() {
 // GAME-SPECIFIC UPDATE LOGIC
 function updateSimulation(du) {
     gameManager.updateScreen(du);
-    processDiagnostics();    
+    processDiagnostics();
     entityManager.update(du);
 	spatialManager.update(du);
-	
+
     // Prevent perpetual firing!
     eatKey(Ship.prototype.KEY_FIRE);
 }
@@ -112,19 +112,21 @@ function requestPreloads() {
     var requiredImages = {
 		back 			: "Pictures/back.png",
         back_active 	: "Pictures/back_active.png",
-		background 		: "Pictures/Background.png",
-		black 			: "Pictures/black.png",	
+		black 			: "Pictures/black.png",
 		bombs           : "Pictures/bomb.png",
-		bullet     		: "Pictures/bullet.png",		
+		bullet     		: "Pictures/bullet.png",
         control			: "Pictures/control.png",
         controls_active	: "Pictures/controls_active.png",
 	    defender   		: "Pictures/defender.png",
 		enemy	   		: "Pictures/enemySheet.png",
-		mans            : "Pictures/mans.png",		
+		mans            : "Pictures/mans.png",
         menu			: "Pictures/menu.png",
 		play	   		: "Pictures/play.png",
-        play1 			: "Pictures/play1.png",     
-		ship  	   		: "Pictures/playerSheet.png"
+        play1 			: "Pictures/play1.png",
+		ship  	   		: "Pictures/playerSheet.png",
+    background1 	: "Pictures/Background1.png",
+    background2 	: "Pictures/Background2.png",
+    backgroundMinimap 	: "Pictures/BackgroundMinimap.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -132,26 +134,28 @@ function requestPreloads() {
 
 var g_sprites = {};
 
-function preloadDone() {	
-  
+function preloadDone() {
+
     g_sprites.back = new Sprite(g_images.back);
     g_sprites.back_active = new Sprite(g_images.back_active);
-	g_sprites.background = new Sprite(g_images.background);  
 	g_sprites.black = new Sprite(g_images.black);
 	g_sprites.bombs = new Sprite(g_images.bombs);
 	g_sprites.bullet = new Sprite(g_images.bullet);
     g_sprites.control = new Sprite(g_images.control);
-    g_sprites.controls_active = new Sprite(g_images.controls_active);   
+    g_sprites.controls_active = new Sprite(g_images.controls_active);
 	g_sprites.defender = new Sprite(g_images.defender);
 	g_sprites.enemy = new Sprite(g_images.enemy);
     g_sprites.mans = new Sprite(g_images.mans);
     g_sprites.menu = new Sprite(g_images.menu);
-    g_sprites.play = new Sprite(g_images.play);  
-	g_sprites.play1 = new Sprite(g_images.play1); 	
+    g_sprites.play = new Sprite(g_images.play);
+	g_sprites.play1 = new Sprite(g_images.play1);
 	g_sprites.ship = new Sprite(g_images.ship);
-	
+  g_sprites.background1 = new Sprite(g_images.background1);
+  g_sprites.background2 = new Sprite(g_images.background2);
+  g_sprites.backgroundMinimap = new Sprite(g_images.backgroundMinimap);
+
 	entityManager.init();
-	main.init();	
+	main.init();
 }
 
 // Kick it off

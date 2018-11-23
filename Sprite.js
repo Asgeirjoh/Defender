@@ -12,13 +12,13 @@
 */
 
 // Construct a "sprite" from the given `image`.
-function Sprite(image) {	
+function Sprite(image) {
 	this._SPRITE_DIMENSION = 32;
     this.image = image;
 	this.mapSize = g_canvas.width;
     this.width = image.width;
     this.height = image.height;
-	
+
 	this._imageFrames = image.width / this._SPRITE_DIMENSION;
 }
 
@@ -32,6 +32,12 @@ Sprite.prototype.getSpriteWidth = function(){
 
 Sprite.prototype.getSpriteHeight = function(){
 	return this.height;
+};
+
+Sprite.prototype.drawMinimap = function (ctx, x, y, sx, sy) {
+	this.x = x;
+	this.y = y;
+	ctx.drawImage(this.image, x, y, sx, sy);
 };
 
 Sprite.prototype.drawAt = function (ctx, x, y) {
@@ -64,8 +70,8 @@ Sprite.prototype.drawCentred = function (ctx, cx, cy, rotation) {
 Sprite.prototype.drawCentredAt = function (ctx, cx, cy, frame, scale){
 	let w = this.getSpriteWidth();
 	let h = this.getSpriteHeight();
-	let f = frame * w;	
-	
+	let f = frame * w;
+
     ctx.save();
     ctx.translate(cx, cy);
     ctx.scale(scale, scale);

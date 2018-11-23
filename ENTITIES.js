@@ -105,7 +105,6 @@ function requestPreloads() {
     var requiredImages = {
 		ship  	   		: "Pictures/playerSheet.png",
 		bullet     		: "Pictures/shot.png",
-		background 		: "Pictures/Background.png",
         enemy	   		: "Pictures/enemySheet.png",
         defender   		: "Pictures/defender.png",
         play	   		: "Pictures/play.png",
@@ -135,7 +134,6 @@ var g_sprites = {};
 function preloadDone() {
 
     g_sprites.ship = new Sprite(g_images.ship);
-    g_sprites.background = new Sprite(g_images.background);
     g_sprites.bullet = new Sprite(g_images.bullet);
     g_sprites.enemy = new Sprite(g_images.enemy);
     g_sprites.play1 = new Sprite(g_images.play1);

@@ -31,18 +31,27 @@ _findNearestEntity : function(posX, posY) {
         newLength, closestEntity = null;
 
 	this._entities.forEach(function(value, key) {			
-			let ent = value;
-			
-			newLength = util.distSq(posX, posY,
-							ent.cx, ent.cy);
-	 
-			if (newLength > 0 && newLength < minLength) {				
-				minLength = newLength;
-				closestEntity = ent;						
-			}		
+		let ent = value;
+		
+		newLength = util.distSq(posX, posY,
+						ent.cx, ent.cy);
+ 
+		if (newLength > 0 && newLength < minLength) {				
+			minLength = newLength;
+			closestEntity = ent;						
+		}		
 	});		
 		
 	return closestEntity;		
+},
+
+// Finds the enemies to bomb.
+_bombEnemy : function(){	
+	this._entities.forEach(function(value, key) {		
+		if(value.name === "Enemy"){			
+			value.isBombed = true;
+		}		
+	});
 },
 
 // PUBLIC METHODS
@@ -63,9 +72,7 @@ unregister: function(entity) {
 	this._entities.delete(id);	
 },
 
-findEntityInRange: function(target, posX, posY, radius) {	
-	let x = (radius * Math.sin(radius));
-	let y = -(radius * Math.cos(radius));	
+findEntityInRange: function(target, posX, posY, radius) {		
 	let nearest = this._findNearestEntity(posX, posY);	
 	
 	if(nearest != null){
@@ -75,12 +82,15 @@ findEntityInRange: function(target, posX, posY, radius) {
 	}	
 },
 
+findEnemyToBomb: function(){
+	this._bombEnemy();
+},
+
 // Unused, but is here if needed.
 update: function(du){
 },
 
-render: function(ctx) {	
-   
+render: function(ctx) {	   
 	var oldStyle = ctx.strokeStyle;
 	ctx.strokeStyle = "red";
 		

@@ -71,6 +71,7 @@ Entity.prototype.isDead = function () {
     return this._isDeadNow;
 };
 
+// Finding a target
 Entity.prototype.findTarget = function (target) {
     var pos = this.getPos();
 	
@@ -80,6 +81,11 @@ Entity.prototype.findTarget = function (target) {
 	if(hitEntity){		
 		return hitEntity
 	}	
+};
+
+// Bombs all targes.
+Entity.prototype.bombTarget = function () {  
+	spatialManager.findEnemyToBomb();	
 };
 
 // This is just little "convenience wrapper"

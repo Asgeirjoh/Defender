@@ -5,11 +5,11 @@ function Bomb(descr){
 	}
 	
 	this.setup();
-	
-	this.isBombing = false;
+	this.bombs = descr.bombCount;
+	this.bombUsed = false;
 	this.scale = 1;
 	this.closeEntity = null; // A container for the entity which is close.
-	spatialManager.register(this);
+	spatialManager.register(this);	
 }
 
 Bomb.prototype = new Entity();
@@ -19,45 +19,24 @@ Bomb.prototype.KEY_BOMB = 'B'.charCodeAt(0);
 
 Bomb.prototype.useBomb = function(){
 
-	
-	
-	if(!this.isBombing){
-		//return 0;
-	}
-
-	// If there is no entity in the container
-	// then add one.	
-	if(this.closeEntity == null){
-		this.closeEntity = this.findTarget(this.target);
-	}	
-	
-	// If the entity in the closeEntity container
-	// happens to be undefined or a bullet then empty the
-	// container and start over.
-	if(this.closeEntity == undefined){
-		this.closeEntity = null;
-		
-		return 0;
-	}	
-		
-	let canTakeHit = this.closeEntity.takeBulletHit;	
-	
-	if (canTakeHit){			
-		//canTakeHit.call(this.closeEntity);	
-		//spatialManager.unregister(this);
-		//return entityManager.KILL_ME_NOW;
+	if(this.bombs > 0){
+		if(eatKey(this.KEY_BOMB)){
+			this.bombTarget();	
+			this.bombs--;
+			this.bombUsed = true;		
+		}
 	}
 };
 
 Bomb.prototype.update = function(du){
-	//this.useBomb();	
-
-if(keys[this.KEY_BOMB]){
-		this.isBombing = true;
-		
-	}	
+	this.useBomb();	
 };
 
 Bomb.prototype.render = function(ctx){
+	if(this.bombUsed){
+		ctx.globalAlpha = 0;		
+	}	
+
 	g_sprites.bombs.drawCentredAt(ctx, this.cx, this.cy, 0, this.scale);
+	ctx.globalAlpha = 1;
 };

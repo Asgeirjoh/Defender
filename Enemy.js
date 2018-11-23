@@ -36,6 +36,10 @@ Enemy.prototype.takeBulletHit = function(){
 
 Enemy.prototype.update = function(du) {
 
+	if(this._isDeadNow) {
+		return entityManager.KILL_ME_NOW;
+	  }
+
 	this.cx += this.velX * du;
 	this.cy += this.velY * du;
 

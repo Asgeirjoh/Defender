@@ -95,7 +95,7 @@ generateEnemy : function(name, cx, cy, velX, velY, frame){
 },
 
 generateFriends : function(descr) {
-    var NUM = 15;
+    var NUM = 8;
     for (var i = 0; i < NUM; ++i) {
         this._friends.push(new Friends({cx: 500 + Math.random()
 												* mapSize,cy:this.cy}));
@@ -154,6 +154,26 @@ categoryUpdate : function(du){
             aCategories.splice(i, 1);
         }
       }
+    }
+},
+
+resetGame: function() {
+
+    for(var i = 0; i < this._friends.length; i++)
+    {
+        this._friends[i].kill();
+    }
+    for(var i = 0; i < this._ships.length; i++)
+    {
+        this._ships[i].kill();
+    }
+    for(var i = 0; i < this._enemies.length; i++)
+    {
+        this._enemies[i].kill();
+    }
+    for(var i = 0; i < this._bullets.length; i++)
+    {
+        this._bullets[i].kill();
     }
 },
 

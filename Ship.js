@@ -52,6 +52,12 @@ Ship.prototype.warpingScale = -1;
 
 
 Ship.prototype.update = function(du) {
+    if(this._isDeadNow) {
+        return entityManager.KILL_ME_NOW;
+      }
+    if(this.lives == 0){
+        gameManager.position = gameManager.gamelost;
+    }
 
     var steps = this.numSubSteps;
     var dStep = du / steps;
@@ -187,7 +193,6 @@ Ship.prototype.updateFrame = function(){
 };
 
 Ship.prototype.maybeFireBullet = function () {
-
     if (eatKey(this.KEY_FIRE)) {
         let launchVel = 10;
 		let left = -1;

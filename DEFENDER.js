@@ -85,8 +85,9 @@ function processDiagnostics() {
 	cx : g_mouseX,
 	cy : g_mouseY});
 
-    if (eatKey(KEY_K)) entityManager.killNearestShip(
-        g_mouseX, g_mouseY);
+    if (eatKey(KEY_K)){
+        gameManager.position = gameManager.gamelost;
+    }
 }
 
 // =================
@@ -126,7 +127,10 @@ function requestPreloads() {
 		ship  	   		: "Pictures/playerSheet.png",
     background1 	: "Pictures/Background1.png",
     background2 	: "Pictures/Background2.png",
-    backgroundMinimap 	: "Pictures/BackgroundMinimap.png"
+    backgroundMinimap 	: "Pictures/BackgroundMinimap.png",
+    gameOver        : "Pictures/gameOver.png",
+    playAgain       : "Pictures/playAgain.png",
+    playAgain1      : "Pictures/playAgain1.png",
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -153,6 +157,9 @@ function preloadDone() {
   g_sprites.background1 = new Sprite(g_images.background1);
   g_sprites.background2 = new Sprite(g_images.background2);
   g_sprites.backgroundMinimap = new Sprite(g_images.backgroundMinimap);
+  g_sprites.gameOver = new Sprite(g_images.gameOver);
+  g_sprites.playAgain = new Sprite(g_images.playAgain);
+  g_sprites.playAgain1 = new Sprite(g_images.playAgain1);
 
 	entityManager.init();
 	main.init();

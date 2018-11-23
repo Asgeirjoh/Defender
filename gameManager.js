@@ -47,8 +47,8 @@ var gameManager = {
 
 	_renderStartScreen :function(ctx){
 		g_sprites.defender.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2,0);
-		g_sprites.play.drawCentred(ctx,g_canvas.width/2,320,0);
-		g_sprites.control.drawCentred(ctx,g_canvas.width/2,350,0);
+		g_sprites.play.drawCentred(ctx,g_canvas.width/2,380,0);
+		g_sprites.control.drawCentred(ctx,g_canvas.width/2,400,0);
 	},
 
 	_updateStartScreen: function(ctx)	{
@@ -91,8 +91,8 @@ var gameManager = {
 	_renderGameWonScreen: function(du){
 		util.playAudio(gameOverSound);
 		g_sprites.gameOver.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2,0);
-		util.drawLetters(ctx,"Your Score is: "+ this.score,"end",g_canvas.width/2+100, 30)
-		g_sprites.playAgain.drawCentred(ctx,g_canvas.width/2,400,0);
+		util.drawLetters(ctx,"Your Score is: "+ this.score,"end",g_canvas.width/2+100, 100)
+		g_sprites.playAgain.drawCentred(ctx,g_canvas.width/2,430,0);
 		g_sprites.playAgain.image = g_images.playAgain;
 		if(this._isMouseOver(g_sprites.playAgain)){
 			g_sprites.playAgain.image = g_images.playAgain1;
@@ -124,12 +124,16 @@ var gameManager = {
 	    processDiagnostics();
 		entityManager.update(du);
 		eatKey(Ship.prototype.KEY_FIRE);
+		if(this.gameOver){
+	    	console.log("gamelost");
+			this.position = this.gamelost;
+	    }
 	},
 
 
 	_renderControlScreen: function(ctx){
 		g_sprites.menu.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2);
-		g_sprites.back.drawCentred(ctx,g_canvas.width/2,470);
+		g_sprites.back.drawCentred(ctx,g_canvas.width/2,490);
 
 		g_sprites.back.image = g_images.back;
 		if(this._isMouseOver(g_sprites.back)){
@@ -143,9 +147,10 @@ var gameManager = {
 	},
 
 	reset: function(du){
-		this.gameOver = false;
 		this.level = 1;
-		entityManager.init();
+		this.gameOver = false;
 		entityManager.resetGame();
+		Ship.prototype.lives = 3;
+		entityManager.init();
 	},
 }

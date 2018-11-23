@@ -1,6 +1,6 @@
 "use strict";
 
-var g_toggleAudio = false;
+var g_toggleAudio = true;
 
 var startUpSound = new Audio("Sounds/startSound.wav");
 var shootSound = new Audio("Sounds/shipShotLong.wav");
@@ -14,3 +14,6 @@ var friendFallingSound = new Audio("Sounds/civilFalling.wav");
 var friendPickUpSound = new Audio("Sounds/civilPickUp.wav");
 var friendSavedSound = new Audio("Sounds/civilSaved.wav");
 var gameOverSound = new Audio("Sounds/gameOver.wav");
+var bigBomb = new Audio("Sounds/bigBomb.wav");
+var enemyDeath = new Audio("Sounds/enemyDeath-2.wav");
+var enemyShot = new Audio("Sounds/enemyShot-2.wav");

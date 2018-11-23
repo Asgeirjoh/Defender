@@ -95,10 +95,10 @@ generateEnemy : function(name, cx, cy, velX, velY, frame){
 },
 
 generateFriends : function(descr) {
-    var NUM = 1;
+    var NUM = 15;
     for (var i = 0; i < NUM; ++i) {
         this._friends.push(new Friends({cx: 500 + Math.random()
-												* g_canvas.width,cy:this.cy}));
+												* mapSize,cy:this.cy}));
     }
 },
 
@@ -122,6 +122,7 @@ enemyCountUpdate : function(du){
 
 			this.generateEnemy("Enemy", x, y, 1, 1, i);
 		}
+    gameManager.level += 1;
 	}
 
 	for(let i = 0; i < this._enemies.length; i++){

@@ -29,6 +29,8 @@ Enemy.prototype = new Entity();
 Enemy.prototype.isBombed = false;
 
 Enemy.prototype.takeBulletHit = function(){
+  util.playAudio(enemyDeath);
+
 	this.kill();
 };
 

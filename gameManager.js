@@ -10,6 +10,7 @@ var gameManager = {
 	controlScreen : 2,
 	gamelost : 3,
 	score : 0,
+	level : 1,
 	position : 0,
 	gameOver : false,
 	startUp : true,
@@ -79,11 +80,16 @@ var gameManager = {
 		return false;
 	},
 
-	_renderScore: function() {
-		util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 30);
+	_renderScore: function(ctx) {
+		util.drawLetters(ctx, this.score, "end", g_canvas.width-10, 35);
+	},
+
+	_renderLevel: function(ctx) {
+		util.drawLetters(ctx, "Level: " + this.level, "end", g_canvas.width-10, 75);
 	},
 
 	_renderGameWonScreen: function(du){
+		util.playAudio(gameOverSound);
 		g_sprites.gameOver.drawCentred(ctx,g_canvas.width/2,g_canvas.height/2,0);
 		util.drawLetters(ctx,"Your Score is: "+ this.score,"end",g_canvas.width/2+100, 30)
 		g_sprites.playAgain.drawCentred(ctx,g_canvas.width/2,400,0);
@@ -106,6 +112,7 @@ var gameManager = {
 		Background1.render(ctx);
 		entityManager.render(ctx);
 		this._renderScore(ctx);
+		this._renderLevel(ctx);
 	},
 
 	_updateGameScreen: function(du){
@@ -135,12 +142,9 @@ var gameManager = {
 
 	},
 
-	newLevel: function(du) {
-
-	},
-
 	reset: function(du){
 		this.gameOver = false;
+		this.level = 1;
 		entityManager.init();
 		entityManager.resetGame();
 	},

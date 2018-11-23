@@ -18,8 +18,6 @@ function Ship(descr) {
     }
     this.setup(descr);
 
-	util.playAudio(flySound);
-
     // Remember my reset positions
     this.reset_cx = this.cx;
     this.reset_cy = this.cy;
@@ -70,7 +68,6 @@ Ship.prototype.update = function(du) {
 	// Turning the ship.
 	this.updateFrame();
 
-	this.playFlyingSound();
 };
 
 Ship.prototype.computeSubStep = function (du) {
@@ -210,6 +207,7 @@ Ship.prototype.maybeFireBullet = function () {
         entityManager.fireBullet("Enemy", launchDist,
 							this.cy + 5, orientation, 0);
     }
+    this.playFlyingSound();
 };
 
 Ship.prototype.setPos = function (cx, cy) {

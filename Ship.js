@@ -18,7 +18,7 @@ function Ship(descr) {
     }
     this.setup(descr);
 
-	  util.playAudio(flySound);
+	util.playAudio(flySound);
 
     // Remember my reset positions
     this.reset_cx = this.cx;

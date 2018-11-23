@@ -55,6 +55,10 @@ Ship.prototype.warpingScale = -1;
 
 Ship.prototype.update = function(du) {
 
+    if(this._isDeadNow) {
+        return entityManager.KILL_ME_NOW;
+      }
+
     var steps = this.numSubSteps;
     var dStep = du / steps;
 

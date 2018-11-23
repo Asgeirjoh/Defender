@@ -27,7 +27,7 @@ function Bullet(descr) {
 Bullet.prototype = new Entity();
 
 // Convert times from seconds to "nominal" time units.
-Bullet.prototype.lifeSpan = 1 * SECS_TO_NOMINALS;
+Bullet.prototype.lifeSpan = 1.5 * SECS_TO_NOMINALS;
 
 Bullet.prototype.getRadius = function(){
 	return (g_sprites.bullet.getSpriteWidth() / 2) * this.scale;
@@ -43,11 +43,11 @@ Bullet.prototype.takeBulletHit = function(){
 };
 
 Bullet.prototype.update = function (du) {
-
 	this.lifeSpan -= du;
-  if (this.lifespan < 0) {
+  if (this.lifeSpan < 0) {
     this.kill();
   	spatialManager.unregister(this);
+    return entityManager.KILL_ME_NOW;
   }
 	this.cx += this.velX * du;
 

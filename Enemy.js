@@ -19,7 +19,7 @@ function Enemy(descr) {
 
 	this.setup(descr);
 	this.scale = 1;
-
+	this.allDead = true;
 	spatialManager.register(this);
 }
 
@@ -37,10 +37,13 @@ Enemy.prototype.update = function(du) {
 	this.cx += this.velX * du;
 	this.cy += this.velY * du;
 
-
 	if(this.isDead() || this.isBombed){
 		spatialManager.unregister(this);
 		return entityManager.KILL_ME_NOW;
+	}
+
+	if(this.isBombed){
+		this.insert();
 	}
   this.wrapPosition();
 };

@@ -41,8 +41,15 @@ Friends.prototype.randomisePosition = function () {
     this.cy = 590;
 };
 
-Friends.prototype.update = function(du) {
+Friends.prototype.takeBulletHit = function(){
+	this.kill();
+	spatialManager.unregister(this);
+};
 
+Friends.prototype.update = function(du) {
+  if(this._isDeadNow) {
+    return entityManager.KILL_ME_NOW;
+  }
     if(this.frameIndex === 0 || this.frameIndex === 1){
 		this.cx -= 0.2;
 		this.rightStepCount = this.stepLength;
@@ -90,16 +97,10 @@ Friends.prototype.reset = function () {
 Friends.prototype.updateFrames = function(){
     var a = Math.floor(Math.random() * 4);
     this.frameIndex = a;
-}
-
-Friends.prototype.wrapPosition = function () {
-    var halfwidth = g_canvas.width/2;
-	let mapSize = 1000;
-    this.cx = util.wrapRange(this.cx, halfwidth, mapSize + halfwidth);
 };
 
 Friends.prototype.render = function (ctx) {
 
     g_sprites.mans.drawWrappedCentred(
-        ctx,this.frameIndex, this.cx, this.cy);
+        ctx,this.frameIndex, this.cx + offset, this.cy);
 };

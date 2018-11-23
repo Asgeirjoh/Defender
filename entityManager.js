@@ -54,47 +54,47 @@ deferredSetup : function () {
 
 init: function(){
 	for(let i = 0; i < g_sprites.enemy.getImageFrames(); i++){
-		this.generateEnemy("Enemy", 100,40 + (100 * i), 0, 0, i);	}	
+		this.generateEnemy("Enemy", 600,40 + (100 * i), 0, 0, i);	}
 
 	this.generateShip({
 		name: "Ship",
 		cx: (g_canvas.width / 2) - (g_sprites.ship.getSpriteWidth() / 2),
         cy: (g_canvas.height / 2)- (g_sprites.ship.getSpriteHeight() / 2)});
-		
+
 	for(let i = 0; i < 3; i++){
 		this.generateBomb("Enemy", 15 + (35 * i), 30);
 	}
-           
-	this.generateFriends();  
+
+	this.generateFriends();
 },
 
-fireBullet: function(target, cx, cy, velX, velY) {	
+fireBullet: function(target, cx, cy, velX, velY) {
     this._bullets.push(new Bullet({ target: target,
 									cx: cx,
                                     cy: cy,
                                     velX: velX,
-                                    velY: velY 
+                                    velY: velY
 									}));
 },
 
-generateBomb : function(target, cx, cy){	
-	this._bombs.push(new Bomb({target: target, cx: cx, cy: cy}));	
+generateBomb : function(target, cx, cy){
+	this._bombs.push(new Bomb({target: target, cx: cx, cy: cy}));
 },
 
-generateEnemy : function(name, cx, cy, velX, velY, frame){	
+generateEnemy : function(name, cx, cy, velX, velY, frame){
 	this._enemies.push(new Enemy({name: name, cx: cx, cy: cy,
 								  velX: velX, velY: velY,
 								  frame: frame}));
 },
 
-generateFriends : function(descr) {  
-    var NUM = 4;
+generateFriends : function(descr) {
+    var NUM = 1;
     for (var i = 0; i < NUM; ++i) {
-        this._friends.push(new Friends({cx: 500 + Math.random() * g_canvas.width,cy:this.cy}));
+        this._friends.push(new Friends({cx: 500 + Math.random() * mapSize,cy:this.cy}));
     }
 },
 
-generateShip : function(descr) {   
+generateShip : function(descr) {
     this._ships.push(new Ship({name: descr.name, cx: descr.cx, cy: descr.cy}));
 },
 
@@ -106,24 +106,24 @@ haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
 },
 
-update: function(du) {	
+update: function(du) {
     for (var c = 0; c < this._categories.length; ++c) {
       var aCategories = this._categories[c];
-      for (var i = 0; i < aCategories.length; ++i) {        
+      for (var i = 0; i < aCategories.length; ++i) {
         if (aCategories[i].update(du) === this.KILL_ME_NOW) {
             aCategories.splice(i, 1);
         }
       }
-    } 
+    }
 },
 
 render: function(ctx) {
     for (var c = 0; c < this._categories.length; c++) {
         var aCategory = this._categories[c];
-   
+
         for (var i = 0; i < aCategory.length; i++) {
-            aCategory[i].render(ctx);				
-        }        
+            aCategory[i].render(ctx);
+        }
     }
 }
 }

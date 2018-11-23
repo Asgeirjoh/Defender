@@ -1,6 +1,6 @@
 "use strict";
 
-var g_toggleAudio = true;
+var g_toggleAudio = false;
 
 var startUpSound = new Audio("Sounds/startSound.wav");
 var shootSound = new Audio("Sounds/shipShotLong.wav");

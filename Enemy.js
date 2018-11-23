@@ -15,11 +15,11 @@
 function Enemy(descr) {
     for (var property in descr) {
         this[property] = descr[property];
-    } 	
-	
+    }
+
 	this.setup(descr);
 	this.scale = 1;
-	
+
 	spatialManager.register(this);
 }
 
@@ -27,27 +27,27 @@ Enemy.prototype = new Entity();
 Enemy.prototype.smartBombs = 3;
 Enemy.prototype.KEY_BOMB = 'B'.charCodeAt(0);
 
-Enemy.prototype.takeBulletHit = function(){	
+Enemy.prototype.takeBulletHit = function(){
 	this.kill();
 	spatialManager.unregister(this);
 };
 
-Enemy.prototype.update = function(du) {	
+Enemy.prototype.update = function(du) {
 
 	this.cx += this.velX * du;
-	this.cy += this.velY * du;	
+	this.cy += this.velY * du;
 
 	if(this.isDead()){
 		return entityManager.KILL_ME_NOW;
-	}		
+	}
+  this.wrapPosition();
 };
 
 Enemy.prototype.getRadius = function(){
-	return (g_sprites.enemy.getSpriteWidth() / 2) * this.scale;	
+	return (g_sprites.enemy.getSpriteWidth() / 2) * this.scale;
 };
 
-
 Enemy.prototype.render = function (ctx) {
-    g_sprites.enemy.drawCentredAt(ctx, this.cx, this.cy,
+    g_sprites.enemy.drawWrappedCentredAt(ctx, this.cx + offset, this.cy,
 									this.frame,	this.scale);
 };

@@ -279,6 +279,7 @@ Ship.prototype.updateWarp = function () {
   this.scale += this.warpingScale * 0.02;
 
   if (this.scale < 0.5) {
+    spatialManager.unregister(this);
     // Warp to random position x
     var x = Math.random() * -mapSize;
     setOffset(x);
@@ -291,6 +292,7 @@ Ship.prototype.updateWarp = function () {
   if (this.scale > 2) {
     this.scale = 2;
     this.isWarping = false;
+    spatialManager.register(this);
   }
 };
 

@@ -86,13 +86,14 @@ Bullet.prototype.update = function (du) {
 			return entityManager.KILL_ME_NOW;
 		}
 	}
+  this.wrapPosition();
 };
 
 Bullet.prototype.render = function (ctx) {
 	var fadeThresh = this.lifeSpan / 3;
 
 		ctx.globalAlpha = this.lifeSpan/fadeThresh;
-			g_sprites.bullet.drawCentredAt(ctx,
+			g_sprites.bullet.drawWrappedCentredAt(ctx,
 					this.cx + offset, this.cy, 0, this.scale);
 
 

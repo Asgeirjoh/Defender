@@ -27,8 +27,10 @@ Enemy.prototype = new Entity();
 
 // Kannar hvort sprengja hafi verið notuð.
 Enemy.prototype.isBombed = false;
+Enemy.prototype.isCaptor = false;
 
 Enemy.prototype.takeBulletHit = function(){
+  gameManager.score += 250;
   	util.playAudio(enemyDeath);
 	this.kill();
 };
@@ -38,9 +40,10 @@ Enemy.prototype.update = function(du) {
 	if(this._isDeadNow) {
 		return entityManager.KILL_ME_NOW;
 	  }
-
-	this.cx += this.velX * du;
-	this.cy += this.velY * du;
+  if (!this.isCaptor) {
+  	this.cx += this.velX * du;
+  	this.cy += this.velY * du;
+}
 
 	if(this.isDead() || this.isBombed){
 		spatialManager.unregister(this);
@@ -51,11 +54,18 @@ Enemy.prototype.update = function(du) {
 		this.insert();
 	}
   this.wrapPosition();
+  this.isCapturing();
   spatialManager.register(this);
 };
 
 Enemy.prototype.getRadius = function(){
 	return (g_sprites.enemy.getSpriteWidth() / 2) * this.scale;
+};
+
+Enemy.prototype.isCapturing = function(){
+	if (this.isCaptor) {
+    this.cy -= 2;
+  }
 };
 
 Enemy.prototype.render = function (ctx) {

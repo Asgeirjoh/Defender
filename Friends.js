@@ -29,6 +29,8 @@ function Friends(descr) {
 Friends.prototype = new Entity();
 Friends.prototype.scale = 1;
 Friends.prototype.isRegistered = false;
+Friends.prototype.isCaptured = false;
+Friends.prototype.kidnapper = 0;
 
 Friends.prototype.getRadius = function(){
 	return (g_sprites.mans.getSpriteWidth() / 2) * 0.7;
@@ -76,7 +78,27 @@ spatialManager.unregister(this);
 		else this.rightStepCount++;
 	}
 	this.wrapPosition();
+  //this.updateDeath();
 	spatialManager.register(this);
+};
+
+Friends.prototype.updateDeath = function() {
+  for (var i = 0; i < entityManager._enemies.length; i++) {
+    if (typeof entityManager._enemies[i] != "undefined") {
+      if (entityManager._enemies[i].cx = this.cx && entityManager._enemies[i].cy >570) {
+        this.isCaptured = true;
+        entityManager._enemies[i].isCaptor = true;
+        this.kidnapper = i;
+      }
+}
+}
+  if (this.isCaptured) {
+    this.cy -= 2;
+}
+if (this.cy < 140) {
+  this.kill();
+  entityManager._enemies[i].isCaptor = false;
+}
 };
 
 Friends.prototype.updateFrames = function(){

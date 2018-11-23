@@ -43,6 +43,9 @@ Bullet.prototype.takeBulletHit = function(){
 };
 
 Bullet.prototype.update = function (du) {
+	if(this._isDeadNow) {
+        return entityManager.KILL_ME_NOW;
+      }
 	this.lifeSpan -= du;
   if (this.lifeSpan < 0) {
     this.kill();

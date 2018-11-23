@@ -146,6 +146,7 @@ var gameManager = {
 	reset: function(du){
 		this.gameOver = false;
 		entityManager.resetGame();
+		Ship.prototype.lives = 3;
 		entityManager.init();
 	},
 }

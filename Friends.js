@@ -16,15 +16,15 @@ function Friends(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-	
+
 	this.setup();
-	
+
     this.updateFrames();
     this.stepLength = 10;
 	this.leftStepCount = this.stepLength;
 	this.rightStepCount = this.stepLength;
     this.randomisePosition();
-	
+
 	spatialManager.register(this);
 };
 
@@ -38,7 +38,7 @@ Friends.prototype.getRadius = function(){
 
 Friends.prototype.randomisePosition = function () {
     this.cx = this.cx || Math.random() * g_canvas.width;
-    this.cy = 490;
+    this.cy = 590;
 };
 
 Friends.prototype.update = function(du) {
@@ -99,7 +99,7 @@ Friends.prototype.wrapPosition = function () {
 };
 
 Friends.prototype.render = function (ctx) {
-	
+
     g_sprites.mans.drawWrappedCentred(
         ctx,this.frameIndex, this.cx, this.cy);
 };

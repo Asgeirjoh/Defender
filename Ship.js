@@ -47,7 +47,7 @@ Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.numSubSteps = 1;
 Ship.prototype.frame = 0;
-Ship.prototype.scale = 0.5;
+Ship.prototype.scale = 2;
 Ship.prototype.lives = 3;
 Ship.prototype.isWarping = false;
 Ship.prototype.warpingScale = -1;
@@ -166,8 +166,8 @@ Ship.prototype.applyAccel = function (accelX, accelY, du) {
 	this.cy += du * intervalVelY;
 
 	// Creating a roof for the playing area.
-	if(this.cy < g_sprites.ship.getSpriteHeight()){
-		this.cy = g_sprites.ship.getSpriteHeight();
+  if(this.cy < (g_canvas.height - gameHeight) + g_sprites.ship.getSpriteHeight()/2){
+		this.cy = ((g_canvas.height - gameHeight) + g_sprites.ship.getSpriteHeight()/2);
 	}
 
 	// Creating a floor for the playing area.
@@ -276,10 +276,9 @@ Ship.prototype.warp = function () {
 };
 
 Ship.prototype.updateWarp = function () {
-  var preScale = this.scale;
-  this.scale += this.warpingScale * 0.01;
+  this.scale += this.warpingScale * 0.02;
 
-  if (this.scale < 0.1) {
+  if (this.scale < 0.5) {
     // Warp to random position x
     var x = Math.random() * -mapSize;
     setOffset(x);
@@ -287,10 +286,10 @@ Ship.prototype.updateWarp = function () {
     var y = Math.random() * (g_canvas.height - g_sprites.mans.getSpriteHeight());
     this.cy = y;
     this.warpingScale = 1;
-    this.scale = 0.11;
+    this.scale = 0.51;
   }
-  if (this.scale > preScale) {
-    this.scale = preScale;
+  if (this.scale > 2) {
+    this.scale = 2;
     this.isWarping = false;
   }
 };

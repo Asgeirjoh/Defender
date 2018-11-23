@@ -38,9 +38,14 @@ Background.prototype.miniMap = function(ctx) {
   g_sprites.backgroundMinimap.drawMinimap(ctx, 200, 0, 600, 100);
   util.drawBorder(ctx, 198, 0, 602, 100, "3", "green");
   ctx.clip();
-  for (var i = 0; i < 40; i++) {
+  for (var i = 0; i < entityManager._friends.length; i++) {
     if (typeof entityManager._friends[i] != "undefined") {
       util.fillBox(ctx, 97 + entityManager._friends[i].cx/5, (entityManager._friends[i].cy - 100)/5 - 5, 5, 5, "blue");
+    }
+  }
+  for (var i = 0; i < entityManager._enemies.length; i++) {
+    if (typeof entityManager._enemies[i] != "undefined") {
+      util.fillBox(ctx, 97 + entityManager._enemies[i].cx/5, (entityManager._enemies[i].cy - 100)/5 - 5, 5, 5, "red");
     }
   }
   util.fillBox(ctx, 200 + 2 + -offset/5.05 - 3, (entityManager._ships[0].cy - 100)/5 - 5, 7, 7, "white");

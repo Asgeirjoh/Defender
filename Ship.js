@@ -166,8 +166,8 @@ Ship.prototype.applyAccel = function (accelX, accelY, du) {
 	this.cy += du * intervalVelY;
 
 	// Creating a roof for the playing area.
-	if(this.cy < g_sprites.ship.getSpriteHeight()){
-		this.cy = g_sprites.ship.getSpriteHeight();
+  if(this.cy < (g_canvas.height - gameHeight) + g_sprites.ship.getSpriteHeight()/2){
+		this.cy = ((g_canvas.height - gameHeight) + g_sprites.ship.getSpriteHeight()/2);
 	}
 
 	// Creating a floor for the playing area.

@@ -18,9 +18,10 @@ Background.prototype.update = function(du) {
 };
 
 Background.prototype.render = function(ctx) {
-    g_sprites.background2.drawAt(ctx, offset/3, 0);
-    g_sprites.background1.drawAt(ctx, this.cx + offset, 0);
-    this.minimap(ctx);
+    g_sprites.background2.drawAt(ctx, offset/3, 100);
+    g_sprites.background1.drawAt(ctx, this.cx + offset, 100);
+    this.miniMap(ctx);
+    this.topScreen(ctx);
     /*ctx.translate(offset, 0);
     g_sprites.background.drawAt(ctx, 0, 0);
     ctx.setTransform(1, 0, 0, 1, 0, 0);*/
@@ -30,7 +31,7 @@ Background.prototype.wrapPosition = function(du) {
     offset = util.wrapRange(offset, -mapSize, 0);
 };
 
-Background.prototype.minimap = function(ctx) {
+Background.prototype.miniMap = function(ctx) {
   ctx.save();
   ctx.beginPath();
   util.fillBox(ctx, 200, 0, 600, 100, "black");
@@ -39,9 +40,13 @@ Background.prototype.minimap = function(ctx) {
   ctx.clip();
   for (var i = 0; i < 40; i++) {
     if (typeof entityManager._friends[i] != "undefined") {
-      util.fillBox(ctx, 97 + entityManager._friends[i].cx/5, entityManager._friends[i].cy/5 - 5, 5, 5, "blue");
+      util.fillBox(ctx, 97 + entityManager._friends[i].cx/5, (entityManager._friends[i].cy - 100)/5 - 5, 5, 5, "blue");
     }
   }
-  util.fillBox(ctx, 200 + 2 + -offset/5.05 - 3, entityManager._ships[0].cy/5 - 5, 7, 7, "green");
+  util.fillBox(ctx, 200 + 2 + -offset/5.05 - 3, (entityManager._ships[0].cy - 100)/5 - 5, 7, 7, "white");
   ctx.restore();
+}
+
+Background.prototype.topScreen = function(ctx) {
+  util.drawBorder(ctx, 0, 0, mapSize, 100, "3", "green");
 }

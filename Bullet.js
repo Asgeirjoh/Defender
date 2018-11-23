@@ -16,18 +16,15 @@ function Bullet(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
-	
+
 	this.setup(descr);
-	this.closeEntity = null; // A container for the entity which is close.	
+	this.closeEntity = null; // A container for the entity which is close.
 	this.scale = 0.3;
-	util.playAudio(this.shoot);
-	spatialManager.register(this);		
+	util.playAudio(shootSound);
+	spatialManager.register(this);
 }
 
 Bullet.prototype = new Entity();
-
-Bullet.prototype.shoot = new Audio("Sounds/shipShotLong.wav");
-Bullet.prototype.shoot.volume = 0.5;
 
 // Convert times from seconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 1 * SECS_TO_NOMINALS;
@@ -42,20 +39,20 @@ Bullet.prototype.getPos = function () {
 
 Bullet.prototype.takeBulletHit = function(){
 	this.kill();
-	spatialManager.unregister(this);	
+	spatialManager.unregister(this);
 };
 
 Bullet.prototype.update = function (du) {
-	
+
 	this.lifeSpan -= du;
-	this.cx += this.velX * du;	
+	this.cx += this.velX * du;
 
 	// If there is no entity in the container
 	// then add one.
 	if(this.closeEntity == null){
 		this.closeEntity = this.findTarget(this.target);
-	}	
-	
+	}
+
 	// If the entity in the closeEntity container
 	// happens to be undefined or a bullet then empty the
 	// container and start over.
@@ -63,21 +60,21 @@ Bullet.prototype.update = function (du) {
 		this.closeEntity = null;
 		return 0;
 	}
-	
+
 	let x = this.closeEntity.cx * Math.sin(this.getRadius());
 	let y = this.closeEntity.cy * (-Math.cos(this.getRadius()));
 	let a = this.cx * Math.sin(this.getRadius());
-	let b = this.cy * (-Math.cos(this.getRadius()));		
+	let b = this.cy * (-Math.cos(this.getRadius()));
 	let d = util.distSq(a, b, x, y);
-		
+
 	// If the entity is within the bullet´s limit,
 	// then kill it.
 	if((d / (this.getRadius() * 2)) < (this.getRadius() / 4)){
-		
-		var canTakeHit = this.closeEntity.takeBulletHit;	
-		
-		if (canTakeHit){			
-			canTakeHit.call(this.closeEntity);	
+
+		var canTakeHit = this.closeEntity.takeBulletHit;
+
+		if (canTakeHit){
+			canTakeHit.call(this.closeEntity);
 			this.takeBulletHit();
 			return entityManager.KILL_ME_NOW;
 		}
@@ -85,12 +82,12 @@ Bullet.prototype.update = function (du) {
 };
 
 Bullet.prototype.render = function (ctx) {
-	var fadeThresh = this.lifeSpan / 3;	
-	
+	var fadeThresh = this.lifeSpan / 3;
+
 		ctx.globalAlpha = this.lifeSpan/fadeThresh;
 			g_sprites.bullet.drawCentredAt(ctx,
 					this.cx, this.cy, 0, this.scale);
-		
+
 
     ctx.globalAlpha = 1;
 };
